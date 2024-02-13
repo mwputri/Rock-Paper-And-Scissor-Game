@@ -59,7 +59,6 @@ app.post("/login", async (req, res) => {
     }
 });
 
-
 app.get('/', function (req, res) {
     res.send({ status: "Started" });
 });
