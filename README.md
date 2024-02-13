@@ -18,3 +18,9 @@ Make Rock Paper And Scissor Game Using React Native expo
 3. Arra
 
 <h4>Link Figma</h4>
+https://www.figma.com/file/hACkD7C4Uh0FqyHUQSbu14/Game-Batu-Kertaz-Gunting?type=design&node-id=0-1&mode=design&t=nxsAd3XCmyxIppmK-0
+
+<h4>Link Trello</h4>
+https://trello.com/b/tUNa4DVp/rps
+
+![image](https://github.com/mwputri/Rock-Paper-And-Scissor-Game/assets/80372022/8e52dc42-b98e-4de6-ba21-e6d712fbbbff)
