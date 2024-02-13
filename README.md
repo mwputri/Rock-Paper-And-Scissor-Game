@@ -22,5 +22,3 @@ https://www.figma.com/file/hACkD7C4Uh0FqyHUQSbu14/Game-Batu-Kertaz-Gunting?type=
 
 <h4>Link Trello</h4>
 https://trello.com/b/tUNa4DVp/rps
-
-![image](https://github.com/mwputri/Rock-Paper-And-Scissor-Game/assets/80372022/8e52dc42-b98e-4de6-ba21-e6d712fbbbff)
