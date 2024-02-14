@@ -12,9 +12,14 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import React from "react";
+import React, { useState } from "react";
 
 export default function SignUp() {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  
   return (
     <SafeAreaProvider style={styles.container}>
       <ScrollView>
@@ -28,17 +33,19 @@ export default function SignUp() {
           </View>
 
           <SafeAreaView style={styles.form}>
-            <TextInput style={styles.input} placeholder="Email" />
-            <TextInput style={styles.input} placeholder="Username" />
+            <TextInput style={styles.input} placeholder="Email" onChangeText={setEmail}/>
+            <TextInput style={styles.input} placeholder="Username" onChangeText={setUsername}/>
             <TextInput
               style={styles.input}
               placeholder="Password"
               secureTextEntry={true}
+              onChangeText={setPassword}
             />
             <TextInput
               style={styles.input}
               placeholder="Re-type Password"
               secureTextEntry={true}
+              onChangeText={setConfirmPassword}
             />
           </SafeAreaView>
 
