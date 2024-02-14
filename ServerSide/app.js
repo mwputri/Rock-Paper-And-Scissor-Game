@@ -59,6 +59,39 @@ app.post("/login", async (req, res) => {
     }
 });
 
+// untuk menyimpan jumlah total skor
+app.post("/update-score", async(req,res)=>{
+    const{email, newScore}= req.body;
+
+    try{
+        const user = await User.findOne({email:email});
+        if (!user) {
+            return res.send({ status: "error", message: "User not found!" });
+        }
+        user.score = user.score + newScore;
+        await user.save();
+
+        res.status(200).json({ message: "Total score saved successfully" });
+    } catch (error) {
+        console.error("Error saving total score:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
+// untuk leaderboard
+app.get('/leaderboards', async (req, res) => {
+    try {
+        const users = await User.find().sort({ score: -1 });
+
+        const leaderboard = users.map(user => ({ name: user.name, score: user.score }));
+        res.json(leaderboard);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.get('/', function (req, res) {
     res.send({ status: "Started" });
 });
