@@ -1,39 +1,51 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import Home from "./src/screens/Home";
+import Login from "./src/screens/Login";
+import SignUp from "./src/screens/SignUp";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-export default function App() {
+// const App = () => {
+//   return <Home />;
+// };
+// export default App;
+
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
-    <SafeAreaProvider>
-    <View style={styles.container}>
-      <View>
-        <Image />
-      </View>
-      <View>
-        <Text style={styles.title}>
-          Welcome to BAKEGU
-        </Text>
-        <Text style={styles.body}>
-          Ayo kita main!
-        </Text>
-      </View>
-      <Button title={"Login"} onPress={''}/>
-      <Button title={"Sign Up"} onPress={''}/>
-    </View>
-    </SafeAreaProvider>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="SignUp" component={SignUp} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#FEF6E1",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
-  title:{
-    fontFamily: 'Arial',
-    fontStyle: 'Medium',
-    
-  }
 });
