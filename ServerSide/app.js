@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const mongoUrl = "mongodb+srv://rpsadmin:admin@rps.vtrpb3g.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const JWT_SECRET = "your_secret_key_here"; // Ganti dengan kunci rahasia yang sebenarnya
+const mongoUrl = "mongodb+srv://nuralibasyah:my7pHh3ly1Zub86q@cluster0.ozivslz.mongodb.net/?retryWrites=true&w=majority";
+const JWT_SECRET = "your_secret_key_here"; // Ganti dengan kunci rahasia yang sebenarnya 
 
 mongoose
     .connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -20,9 +20,9 @@ require('./UserDetails');
 const User = mongoose.model("UserInfo");
 
 app.use(express.json());
-
+  
 app.post('/registration', async (req, res) => {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     const oldUser = await User.findOne({ email: email });
     if (oldUser) {
@@ -33,9 +33,11 @@ app.post('/registration', async (req, res) => {
 
     try {
         await User.create({
-            name: name,
+            username: username,
             email: email,
+            password: password,
             password: encryptedPassword,
+            totalScore: 0,
         });
         res.send({ status: "ok", message: "User Created" });
     } catch (error) {
@@ -48,7 +50,7 @@ app.post("/login", async (req, res) => {
     const oldUser = await User.findOne({ email: email });
 
     if (!oldUser) {
-        return res.send({ status: "error", message: "User doesn't exist!" });
+        return res.send({ status: "error", message: "User already exist" });
     }
 
     if (await bcrypt.compare(password, oldUser.password)) {
@@ -61,7 +63,7 @@ app.post("/login", async (req, res) => {
 
 app.get('/', function (req, res) {
     res.send({ status: "Started" });
-});
+}); 
 
 app.listen(3000, () => {
     console.log("Server running on port 3000");
