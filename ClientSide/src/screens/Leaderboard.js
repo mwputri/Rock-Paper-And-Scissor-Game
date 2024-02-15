@@ -1,51 +1,35 @@
-//Leaderboard pake data Dummmy
+import React from 'react';
+import { FlatList, View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import React from "react";
-import {
-  FlatList,
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+const Leaderboard = ({ }) => {
+    const [userData, setUserData] = useState([]);
 
-const data = [
-  {
-    nama: "Satria",
-    score: "123",
-  },
-  {
-    nama: "Arva",
-    score: "124",
-  },
-  {
-    nama: "Ali",
-    score: "125",
-  },
-];
+useEffect(() => {
+  fetchData();
+}, []);
 
-const Leaderboard = ({}) => {
-  const sortedData = data.sort((a, b) => parseInt(b.score) - parseInt(a.score));
-  const navigation = useNavigation();
+const fetchData = async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/leaderboards');
+    const userData = response.data.sort((a, b) => parseInt(b.totalScore) - parseInt(a.totalScore));
+    setUserData(userData);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+    const navigation = useNavigation();
 
-  const Item = ({ data, index }) => (
-    <View style={styles.item}>
-      <Text style={[styles.itemText, { marginRight: 10 }]}>
-        {index === 0 ? (
-          <Image
-            source={require("../../assets/Winner.png")}
-            style={styles.winnerImage}
-          />
-        ) : (
-          index + 1
-        )}
-      </Text>
-      <Text style={[styles.itemText, { marginRight: 160 }]}>{data.nama}</Text>
-      <Text style={styles.itemText}>{data.score}</Text>
-    </View>
-  );
+    const Item = ({ data, index }) => (
+        <View style={styles.item}>
+          <Text style={[styles.itemText,{marginRight:10}]}>
+            {index === 0 ? <Image source={require('../assets/Winner.png')} style={styles.winnerImage} /> 
+            : index + 1}
+            </Text>
+          <Text style={[styles.itemText,{marginRight:160}]}>{data.nama}</Text>
+          <Text style={styles.itemText}>{data.score}</Text>
+        </View>
+      );  
 
   return (
     <View style={styles.container}>
@@ -65,12 +49,6 @@ const Leaderboard = ({}) => {
             style={styles.image}
           />
           <Text style={styles.title}>LEADERBOARD</Text>
-
-          <View style={styles.header}>
-            <Text style={[styles.headerText, { marginRight: 35 }]}> </Text>
-            <Text style={[styles.headerText, { marginRight: 140 }]}>Name</Text>
-            <Text style={styles.headerText}>Score</Text>
-          </View>
 
           <FlatList
             data={sortedData}
