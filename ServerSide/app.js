@@ -70,7 +70,7 @@ app.post("/update-score", async(req,res)=>{
         if (!user) {
             return res.send({ status: "error", message: "User not found!" });
         }
-        user.score = user.score + newScore;
+        user.totalSscore = user.totalScore + newScore;
         await user.save();
 
         res.status(200).json({ message: "Total score saved successfully" });
@@ -84,9 +84,9 @@ app.post("/update-score", async(req,res)=>{
 // untuk leaderboard
 app.get('/leaderboards', async (req, res) => {
     try {
-        const users = await User.find().sort({ score: -1 });
+        const users = await User.find().sort({ totalScore: -1 });
 
-        const leaderboard = users.map(user => ({ name: user.name, score: user.score }));
+        const leaderboard = users.map(user => ({ name: user.name, totalScore: user.totalScore }));
         res.json(leaderboard);
     } catch (error) {
         console.error('Error fetching users:', error);
