@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Home from "./src/screens/Home";
 import Login from "./src/screens/Login";
-import SignUp from "./src/screens/SignUp";
+import Leaderboard from "./src/screens/Leaderboard";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -33,9 +33,15 @@ const App = () => {
           component={Login}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen
+          name="Leaderboard"
+          component={Leaderboard}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
+
+    // <Home />
   );
 };
 

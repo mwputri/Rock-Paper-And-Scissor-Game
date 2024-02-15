@@ -31,42 +31,42 @@ const fetchData = async () => {
         </View>
       );  
 
-    return (
-    <View style={{ flex:1 }}>
-       <TouchableOpacity style={[styles.profileButton, {alignItems:'flex-end'}]} onPress={() => navigation.navigate('Profile')}>
-        <Image source={require('../assets/Profile.png')} style={styles.profileIcon} />
-      </TouchableOpacity>
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Image source={require('../assets/Leaderboard.png')} style={styles.image} />
-        <Text style={styles.title}>LEADERBOARD</Text>
-        
-        <View style={styles.header}>
-          <Text style={[styles.headerText, {marginRight:35}]}> </Text>
-          <Text style={[styles.headerText, {marginRight:140}]}>Name</Text>
-          <Text style={styles.headerText}>Score</Text>
+  return (
+    <View style={styles.container}>
+      <View style={{ flex: 1 }}>
+        <TouchableOpacity
+          style={[styles.profileButton, { alignItems: "flex-end" }]}
+          onPress={() => navigation.navigate("Profile")}
+        >
+          <Image
+            source={require("../../assets/Profile.png")}
+            style={styles.profileIcon}
+          />
+        </TouchableOpacity>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Image
+            source={require("../../assets/Leaderboard.png")}
+            style={styles.image}
+          />
+          <Text style={styles.title}>LEADERBOARD</Text>
+
+          <FlatList
+            data={sortedData}
+            renderItem={({ item, index }) => <Item data={item} index={index} />}
+            keyExtractor={(item) => item.nama}
+          />
         </View>
-
-        <FlatList
-          data={userData}
-          renderItem={({ item, index }) => <Item data={item} index={index} />}
-          keyExtractor={item => item._id}
-          initialNumToRender={5}
-          maxToRenderPerBatch={5}
-          windowSize={5}
-          removeClippedSubviews={true}
-        />
-        </ScrollView>
-
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <TouchableOpacity
+            style={[styles.button, { elevation: 5 }]}
+            onPress={() => {
+              "";
+            }}
+          >
+            <Text style={styles.buttonText}>Let's Play</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-      <TouchableOpacity
-        style={[styles.button, {elevation:5}]}
-        onPress={() => {''}}
-      >
-        <Text style={ styles.buttonText }>Let's Play</Text>
-      </TouchableOpacity>
-      </View>
-
     </View>
   );
 };
@@ -74,14 +74,14 @@ const fetchData = async () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   profileButton: {
     // position: 'absolute',
-    top: 20,
-    right: 20,
+    paddingTop: 60,
+    paddingRight: 20,
     padding: 10,
   },
   profileIcon: {
@@ -93,50 +93,50 @@ const styles = StyleSheet.create({
     width: 120,
     marginTop: 142,
   },
-  winnerImage:{
+  winnerImage: {
     height: 25,
     width: 25,
-    alignItems:'flex-start',
+    alignItems: "flex-start",
   },
   title: {
     fontSize: 32,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginTop:20,
+    fontWeight: "700",
+    textAlign: "center",
+    marginTop: 20,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
     marginBottom: 10,
   },
   headerText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 18,
-    color: '#333',
-    marginTop:20,
+    color: "#333",
+    marginTop: 20,
   },
   item: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
     paddingVertical: 10,
   },
   itemText: {
     fontSize: 16,
-    color: '#333',
+    color: "#333",
   },
   button: {
     width: 162,
     height: 58,
     borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 40,
-    backgroundColor:'#F6B17A',
-    shadowColor: '#000',
+    backgroundColor: "#F6B17A",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 3,
@@ -144,12 +144,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
   },
-  buttonText:{
+  buttonText: {
     // fontFamily:'Roboto',
-    color:'#FFF',
-    fontSize:20,
-    fontWeight:700,
-  }
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: 700,
+  },
 });
 
 export default Leaderboard;
