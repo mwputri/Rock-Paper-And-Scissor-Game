@@ -1,27 +1,23 @@
-//Leaderboard pake data Dummmy
-
 import React from 'react';
 import { FlatList, View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const data = [
-  {
-    nama: 'Satria',
-    score: '123',
-  },
-  {
-    nama: 'Arva',
-    score: '124',
-  },
-  {
-    nama: 'Ali',
-    score: '125',
-  }
-];
-
-
 const Leaderboard = ({ }) => {
-    const sortedData = data.sort((a, b) => parseInt(b.score) - parseInt(a.score));
+    const [userData, setUserData] = useState([]);
+
+useEffect(() => {
+  fetchData();
+}, []);
+
+const fetchData = async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/leaderboards');
+    const userData = response.data.sort((a, b) => parseInt(b.totalScore) - parseInt(a.totalScore));
+    setUserData(userData);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
     const navigation = useNavigation();
 
     const Item = ({ data, index }) => (
@@ -51,10 +47,15 @@ const Leaderboard = ({ }) => {
         </View>
 
         <FlatList
-          data={sortedData}
+          data={userData}
           renderItem={({ item, index }) => <Item data={item} index={index} />}
-          keyExtractor={item => item.nama}
+          keyExtractor={item => item._id}
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          windowSize={5}
+          removeClippedSubviews={true}
         />
+        </ScrollView>
 
       </View>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
