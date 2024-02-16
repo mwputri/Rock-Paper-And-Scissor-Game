@@ -8,6 +8,7 @@ import {
   StatusBar,
   ScrollView,
   ImageBackground,
+  Alert,
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Login from "./Login";
