@@ -23,7 +23,7 @@ const fetchData = async () => {
     const Item = ({ data, index }) => (
         <View style={styles.item}>
           <Text style={[styles.itemText,{marginRight:10}]}>
-            {index === 0 ? <Image source={require('../assets/Winner.png')} style={styles.winnerImage} /> 
+            {index === 0 ? <Image source={require('../../assets/Winner.png')} style={styles.winnerImage} /> 
             : index + 1}
             </Text>
           <Text style={[styles.itemText,{marginRight:160}]}>{data.nama}</Text>
