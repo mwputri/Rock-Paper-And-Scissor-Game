@@ -11,15 +11,106 @@ import {
   KeyboardAvoidingView,
   Modal,
   ImageBackground,
+  Alert,
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import React, { useState } from "react";
 import Leaderboard from "./Leaderboard";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import axios from "axios";
 
 const Background = require("../../assets/bilal.jpeg");
 
 export default function Login({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [username, setUserName] = useState(" ");
+  const [userNameVerify, setUserNameVerify] = useState(false);
+  const [email, setEmail] = useState(" ");
+  const [emailVerify, setEmailVerify] = useState(false);
+  const [password, setPassword] = useState(" ");
+  const [passwordVerify, setPasswordVerify] = useState(false);
+  const [passwordConfirm, setPasswordConfirm] = useState(" ");
+  const [passwordVerifyConfirm, setPasswordVerifyConfirm] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleRegister = () => {
+    const userData = {
+      username: username,
+      email: email,
+      password: password,
+    };
+    if (userNameVerify && emailVerify && passwordVerify) {
+      axios
+        .post("http://localhost:3000/registration", userData)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.status == "ok") {
+            Alert.alert("Register Done!");
+            setModalVisible(false);
+          } else {
+            Alert.alert(JSON.stringify(res.data));
+          }
+        })
+
+        .catch((e) => console.log(e));
+    } else {
+      Alert.alert("Fill mandatory details!");
+    }
+  };
+
+  const handleUserName = (n) => {
+    console.log(n.nativeEvent.text);
+    const userNameVar = n.nativeEvent.text;
+    setUserName(userNameVar);
+    setUserNameVerify(false);
+    if (userNameVar.length > 4) {
+      setUserNameVerify(true);
+    }
+  };
+
+  const handleEmail = (e) => {
+    console.log(e.nativeEvent.text);
+    const emailVar = e.nativeEvent.text;
+    setEmail(emailVar);
+    setEmailVerify(false);
+    if (/^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{1,}$/.test(emailVar)) {
+      setEmail(emailVar);
+      setEmailVerify(true);
+    }
+  };
+
+  const handlePassword = (p) => {
+    console.log(p.nativeEvent.text);
+    const passwordVar = p.nativeEvent.text;
+    setPassword(passwordVar);
+    setPasswordVerify(false);
+    // if (/(?=.*\d)(?=.*[a-z])(?=.*{A-Z}).{6,}/.test(passwordVar))
+    if (passwordVar.length > 4) {
+      setPassword(passwordVar);
+      setPasswordVerify(true);
+    }
+  };
+
+  const handlePasswordConfirm = (p1) => {
+    console.log(p1.nativeEvent.text);
+    const passwordVarConfirm = p1.nativeEvent.text;
+    setPasswordConfirm(passwordVarConfirm);
+    setPasswordVerifyConfirm(true);
+    // if (password == passwordConfirm) {
+    //   setPasswordConfirm(passwordVarConfirm);
+    //   setPasswordVerifyConfirm(true);
+    // }
+  };
+
+  const toggleShowPasswordLogin = () => {
+    setShowPassword(!showPassword);
+    setPasswordVerify(true);
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+    setPasswordVerify(true);
+  };
 
   return (
     <ImageBackground resizeMode="cover" style={styles.background}>
@@ -33,19 +124,34 @@ export default function Login({ navigation }) {
           </View>
           <KeyboardAvoidingView behavior={"position"} enabled={true}>
             <View style={styles.deskripsiGroup}>
-              <Text style={styles.title}>Login Dulu Sebelum Main!</Text>
+              <Text style={styles.title}>Login!</Text>
               <Text style={styles.deskripsi}>
                 Sign in with your data that you have entered during your
                 registration
               </Text>
 
               <SafeAreaView style={styles.form}>
-                <TextInput style={styles.input} placeholder="Username" />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Password"
-                  secureTextEntry={true}
-                />
+                <View>
+                  <View style={styles.inputBoxLogin}>
+                    <TextInput style={styles.input} placeholder="Username" />
+                  </View>
+                </View>
+                <View>
+                  <View style={styles.inputBoxLogin}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Password"
+                      secureTextEntry={!showPassword}
+                    />
+                    <MaterialCommunityIcons
+                      name={!showPassword ? "eye-off" : "eye"}
+                      size={24}
+                      color="#aaa"
+                      onPress={toggleShowPasswordLogin}
+                      style={styles.icon}
+                    />
+                  </View>
+                </View>
               </SafeAreaView>
 
               <View style={styles.buttonGroup}>
@@ -92,28 +198,96 @@ export default function Login({ navigation }) {
                     <Text style={styles.titleModal}>Register</Text>
                     <View>
                       <SafeAreaView style={styles.formModal}>
-                        <TextInput
-                          style={styles.inputModal}
-                          placeholder="Email"
-                        />
-                        <TextInput
-                          style={styles.inputModal}
-                          placeholder="Username"
-                        />
-                        <TextInput
-                          style={styles.inputModal}
-                          placeholder="Password"
-                          secureTextEntry={true}
-                        />
-                        <TextInput
-                          style={styles.inputModal}
-                          placeholder="Re-type Password"
-                          secureTextEntry={true}
-                        />
+                        <View>
+                          <View style={styles.inputBox}>
+                            <TextInput
+                              placeholder="Username"
+                              onChange={(n) => handleUserName(n)}
+                              style={styles.inputModal}
+                            />
+                          </View>
+                          {username.length == 0 ? (
+                            username.length > 4
+                          ) : userNameVerify ? null : (
+                            <Text style={styles.inputAllertFalse}>
+                              Minimal 4 character{" "}
+                            </Text>
+                          )}
+                        </View>
+
+                        <View>
+                          <View style={styles.inputBox}>
+                            <TextInput
+                              placeholder="Email"
+                              onChange={(e) => handleEmail(e)}
+                              style={styles.inputModal}
+                            />
+                          </View>
+                          {email.length == 0 ? (
+                            email.length > 1
+                          ) : emailVerify ? null : (
+                            <Text style={styles.inputAllertFalse}>
+                              Input correct email{" "}
+                            </Text>
+                          )}
+                        </View>
+
+                        <View>
+                          <View style={styles.inputBox}>
+                            <TextInput
+                              placeholder="Password"
+                              secureTextEntry={!showPassword}
+                              onChange={(p) => handlePassword(p)}
+                              style={styles.inputModalPassword}
+                            />
+
+                            <MaterialCommunityIcons
+                              name={showPassword ? "eye-off" : "eye"}
+                              size={24}
+                              color="#aaa"
+                              onPress={toggleShowPassword}
+                              style={styles.icon}
+                            />
+                          </View>
+
+                          {password.length == 0 ? (
+                            password.length > 1
+                          ) : passwordVerify ? null : (
+                            <Text style={styles.inputAllertFalsePassword}>
+                              Minimal 4 character{" "}
+                            </Text>
+                          )}
+                        </View>
+
+                        <View>
+                          <View style={styles.inputBox}>
+                            <TextInput
+                              placeholder="Password"
+                              secureTextEntry={!showPassword}
+                              onChange={(p1) => handlePasswordConfirm(p1)}
+                              style={styles.inputModalPassword}
+                            />
+                            <MaterialCommunityIcons
+                              name={showPassword ? "eye-off" : "eye"}
+                              size={24}
+                              color="#aaa"
+                              onPress={toggleShowPassword}
+                              style={styles.icon}
+                            />
+                          </View>
+                          {passwordConfirm == password ? null : (
+                            <Text style={styles.inputAllertFalsePassword}>
+                              Password doesn't match{" "}
+                            </Text>
+                          )}
+                        </View>
                       </SafeAreaView>
                     </View>
                     <View style={styles.buttonGroup}>
-                      <TouchableOpacity style={styles.buttonModal} onPress={""}>
+                      <TouchableOpacity
+                        style={styles.buttonModal}
+                        onPress={() => handleRegister()}
+                      >
                         <Text style={styles.textButtonModal}>Register</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
@@ -154,7 +328,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     width: 400,
-    blur: 10,
   },
   modalCard: {
     backgroundColor: "#FFB996",
@@ -178,19 +351,73 @@ const styles = StyleSheet.create({
   },
   formModal: {
     marginTop: 30,
+    alignItems: "center",
+    // backgroundColor: "#fff",
+    flexDirection: "column,",
+    // paddingHorizontal: 10,
   },
   input: {
     height: 40,
-    margin: 12,
-    borderBottomWidth: 1,
+    // margin: 12,
+    // borderBottomWidth: 1,
+    // padding: 10,
+    width: "90%",
+  },
+  inputBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    // backgroundColor: "#fff",
+    justifyContent: "center",
+    // marginLeft: 14,
+    marginVertical: 14,
     padding: 10,
+    paddingHorizontal: 20,
+    height: 40,
+    width: 250,
+    backgroundColor: "#FFE4C9",
+  },
+  inputBoxLogin: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 14,
+    paddingHorizontal: 10,
+    height: 40,
+    width: 250,
+    // backgroundColor: "#FFE4C9",
+    borderBottomWidth: 1,
   },
   inputModal: {
-    margin: 12,
+    margin: 14,
+    marginVertical: 14,
     padding: 10,
     height: 40,
     width: 250,
     backgroundColor: "#FFE4C9",
+  },
+  inputModalPassword: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 40,
+    width: 220,
+    padding: 14,
+    // backgroundColor: "#fff",
+  },
+  inputAllertFalse: {
+    color: "red",
+    fontSize: 10,
+    marginLeft: 20,
+    marginTop: -10,
+  },
+  inputAllertFalsePassword: {
+    color: "red",
+    fontSize: 10,
+    marginLeft: 20,
+    marginTop: -10,
+  },
+  icon: {
+    // backgroundColor: "#FFE4C9",
+    // height: 40,
+    marginRight: 10,
   },
   imageCountainer: {
     width: "100%",
@@ -283,6 +510,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     padding: 10,
+    paddingTop: 30,
     // paddingVertical: 40,
     // borderWidth: 0,
     // margin: 10,
