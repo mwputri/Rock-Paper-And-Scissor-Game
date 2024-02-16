@@ -22,3 +22,6 @@ https://www.figma.com/file/hACkD7C4Uh0FqyHUQSbu14/Game-Batu-Kertaz-Gunting?type=
 
 <h4>Link Trello</h4>
 https://trello.com/b/tUNa4DVp/rps
+
+<h4>Link Asset</h4>
+https://drive.google.com/drive/folders/1lpdpO37mEg0j2wZWBOoUDlvc06FBqXgx?usp=sharing 
