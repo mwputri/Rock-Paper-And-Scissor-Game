@@ -1,4 +1,7 @@
+
 const express = require('express');
+const cors = require('cors');
+
 const app = express();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -20,6 +23,7 @@ require('./UserDetails');
 const User = mongoose.model("UserInfo");
 
 app.use(express.json());
+app.use(cors());
   
 app.post('/registration', async (req, res) => {
     const { username, email, password } = req.body;
@@ -86,7 +90,7 @@ app.get('/leaderboards', async (req, res) => {
     try {
         const users = await User.find().sort({ totalScore: -1 });
 
-        const leaderboard = users.map(user => ({ name: user.name, totalScore: user.totalScore }));
+        const leaderboard = users.map(user => ({ name: user.username, totalScore: user.totalScore }));
         res.json(leaderboard);
     } catch (error) {
         console.error('Error fetching users:', error);
