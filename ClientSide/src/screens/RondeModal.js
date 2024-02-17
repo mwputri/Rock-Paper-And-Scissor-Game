@@ -11,59 +11,63 @@ import {
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function RondeModal({ navigation }) {
+export default function RondeModal() {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={"dark-content"} />
       <View style={styles.container}>
-        <View style={styles.imageCountainer}>
-          <Image
-            style={styles.mainImage}
-            source={require("../../assets/Logo.png")}
-          />
+        {/* Header Logo */}
+        <Image style={styles.Logo} source={require("../../assets/Logo.png")} />
+        {/* Header Title */}
+        <View style={styles.ContainerTitle}>
           <LinearGradient
-            // Button Linear Gradient
-            colors={["#FFB996", "#ffff"]}
-            style={styles.circle}
-          >
-            <Text style={styles.string}>Round</Text>
-          </LinearGradient>
-
-          <LinearGradient
-            // Button Linear Gradient
+            // Title Linear Gradient install LinearGradient and inport
             colors={["#FFB996", "#ffff"]}
             style={styles.box}
           >
-            <Text style={styles.string2}>
-              Please select a round to play Bakegu:
+            <Text style={{ fontSize: 18, color: "#1B1A55" }}>
+              Pilih babak kamu!
+            </Text>
+          </LinearGradient>
+          <LinearGradient
+            // Title Linear Gradient install LinearGradient and inport
+            colors={["#FFB996", "#FFE4C9"]}
+            style={styles.circle}
+          >
+            <Text
+              style={{ fontSize: 32, color: "#1B1A55", fontWeight: "bold" }}
+            >
+              BABAK
             </Text>
           </LinearGradient>
         </View>
-        <View style={{ flex: 1, flexDirection: "row" }}>
-          <View style={styles.boxbgk}>
-            <View style={styles.boxbgk2}>
+{/* Body Shape BGK */}
+        <View style={{ flex: 1, flexDirection: "row", marginTop: 50 }}>
+          <View style={styles.Rectangle}>
+            <View style={styles.Shape}>
               <Image
                 style={styles.fingers}
                 source={require("../../assets/Batu.png")}
               />
+              <Text style={{fontSize:24}}>1</Text>
             </View>
           </View>
-          <View style={styles.boxbgk}>
-            <View style={styles.boxbgk2}>
+          <View style={styles.Rectangle}>
+            <View style={styles.Shape}>
               <Image
                 style={styles.fingers}
                 source={require("../../assets/Gunting.png")}
               />
+              <Text style={{fontSize:24}}>3</Text>
             </View>
           </View>
-
-          <View style={styles.boxbgk}>
-
-            <View style={styles.boxbgk2}>
+          <View style={styles.Rectangle}>
+            <View style={styles.Shape}>
               <Image
                 style={styles.fingers}
                 source={require("../../assets/Kertas.png")}
               />
+              <Text style={{fontSize:24}}>5</Text>
             </View>
           </View>
         </View>
@@ -71,7 +75,7 @@ export default function RondeModal({ navigation }) {
           style={styles.buttonStart}
           onPress={() => setModalVisible(true)}
         >
-          <Text style={styles.textButton}>Start</Text>
+          <Text style={styles.textButton}>Mulai</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaProvider>
@@ -84,21 +88,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  imageCountainer: {
-    width: "100%",
-    alignContent: "center",
-    flex: 1,
-    paddingTop: 80,
-  },
-  mainImage: {
+  Logo: {
     alignSelf: "center",
-    width: "20%",
-    height: "20%",
+    width: 65,
+    height: 65,
+    marginTop: 60,
+  },
+  ContainerTitle: {
+    marginVertical: 60,
+    flex: 1,
+    alignItems: "center",
   },
   circle: {
     alignContent: "center",
     bottom: 10,
-    left: 5,
     backgroundColor: "#FFB996",
     borderRadius: 100,
     width: 150,
@@ -107,38 +110,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   box: {
-    alignContent: "center",
-    bottom: 10,
-    left: 5,
     backgroundColor: "#FFB996",
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    width: 200,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    width: 250,
     height: 80,
     alignItems: "center",
     justifyContent: "center",
+    position: "absolute",
+    top: 120,
   },
-  string: {
-    color: "#1B1A55",
-    fontWeight: "600",
-    fontSize: 32,
-    marginTop: -1,
-    marginLeft: -1,
-  },
-  string2: {
-    color: "#1B1A55",
-    textAlign: "center",
-    fontSize: 12,
-    marginTop: -1,
-    marginLeft: -1,
-  },
-  boxbgk: {
+  Rectangle: {
     width: 90,
     height: 90,
     backgroundColor: "#FFB996",
     margin: 5,
   },
-  boxbgk2: {
+  Shape: {
     width: 80,
     height: 80,
     backgroundColor: "#FFE4C9",
@@ -157,7 +145,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 60,
     backgroundColor: "#FFB996",
-    borderRadius: 20,
+    borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 200,
