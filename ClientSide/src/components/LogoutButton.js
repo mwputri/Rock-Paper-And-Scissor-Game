@@ -9,9 +9,11 @@ const LogoutButton = () => {
   const handleLogout = async () => {
     try {
       // Clear JWT token from AsyncStorage
-      await AsyncStorage.removeItem('jwtToken');
+      // await AsyncStorage.removeItem('jwtToken');
+      await AsyncStorage.removeItem('token');
       // Navigate to login page
-      navigation.navigate('Login');
+      // navigation.navigate('Login');
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Error logging out:', error);
       Alert.alert('Error', 'An error occurred while logging out.');
