@@ -4,16 +4,14 @@
     "slug": "Rock-Paper-And-Scissor-Game",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -25,6 +23,29 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "expo": {
+      "plugins": [
+        [
+          "expo-font",
+          {
+            "fonts": [
+              "./assets/fonts/Roboto-Black.ttf",
+              "./assets/fonts/Roboto-BlackItalic.ttf",
+              "./assets/fonts/Roboto-Bold.ttf",
+              "./assets/fonts/Roboto-BoldItalic.ttf",
+              "./assets/fonts/Roboto-Italic.ttf",
+              "./assets/fonts/Roboto-Light.ttf",
+              "./assets/fonts/Roboto-LightItalic.ttf",
+              "./assets/fonts/Roboto-Medium.ttf",
+              "./assets/fonts/Roboto-MediumItalic.ttf",
+              "./assets/fonts/Roboto-Regular.ttf",
+              "./assets/fonts/Roboto-Thin.ttf",
+              "./assets/fonts/Roboto-ThinItalic.ttf"
+            ]
+          }
+        ]
+      ]
     }
   }
 }
