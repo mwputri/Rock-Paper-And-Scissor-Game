@@ -47,7 +47,7 @@ export default function Login({ navigation }) {
           console.log(res.data);
           if (res.data.status == "ok") {
             Alert.alert("Register Done!");
-            setModalVisible(false);
+            navigation.navigate("Login");
           } else {
             Alert.alert(JSON.stringify(res.data));
           }
@@ -113,217 +113,228 @@ export default function Login({ navigation }) {
     setPasswordVerify(true);
   };
 
-
-  const handleLogin =() =>{
-    const userData={
+  const handleLogin = () => {
+    const userData = {
       username: username,
       password: password,
-    }
-    axios.post("http://localhost:3000/login", userData).then((res)=>{
-      const {token, email}=res.data;
-      AsyncStorage.setItem('token', token);
-      AsyncStorage.setItem('email', email);
-      navigation.navigate('Leaderboard');
-    }).catch((error)=>{
-      console.error('Error Login',error );
-    });
+    };
+    axios
+      .post("http://localhost:3000/login", userData)
+      .then((res) => {
+        const { token, email } = res.data;
+        AsyncStorage.setItem("token", token);
+        AsyncStorage.setItem("email", email);
+        navigation.navigate("Leaderboard");
+      })
+      .catch((error) => {
+        console.error("Error Login", error);
+      });
   };
 
   return (
     <ImageBackground resizeMode="cover" style={styles.background}>
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.imageCountainer}>
-            <Image
-              style={styles.mainImage}
-              source={require("../../assets/loginimage.jpeg")}
-            />
-          </View>
-          <KeyboardAvoidingView behavior={"position"} enabled={true}>
-            <View style={styles.deskripsiGroup}>
-              <Text style={styles.title}>Login!</Text>
-              <Text style={styles.deskripsi}>
-                Sign in with your data that you have entered during your
-                registration
-              </Text>
-
-              <SafeAreaView style={styles.form}>
+      <SafeAreaView style={styles.container}>
+        <SafeAreaProvider>
+          <ScrollView>
+            <View style={styles.imageCountainer}>
+              <Image
+                style={styles.mainImage}
+                source={require("../../assets/loginimage.jpeg")}
+              />
+            </View>
+            <KeyboardAvoidingView behavior={"position"} enabled={true}>
+              <View style={styles.deskripsiGroup}>
                 <View>
-                  <View style={styles.inputBoxLogin}>
-                    <TextInput style={styles.input}
-                              onChange={(n) => handleUserName(n)}
-                              placeholder="Username" />
-                  </View>
+                  <Text style={styles.title}>Login!</Text>
+                  <Text style={styles.deskripsi}>
+                    Sign in with your data that you have entered during your
+                    registration
+                  </Text>
                 </View>
-                <View>
-                  <View style={styles.inputBoxLogin}>
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Password"
-                      secureTextEntry={!showPassword}
-                      onChange={(p) => handlePassword(p)}
-                    />
-                    <MaterialCommunityIcons
-                      name={!showPassword ? "eye-off" : "eye"}
-                      size={24}
-                      color="#aaa"
-                      onPress={toggleShowPasswordLogin}
-                      style={styles.icon}
-                    />
-                  </View>
-                </View>
-              </SafeAreaView>
 
-              <View style={styles.buttonGroup}>
-                <TouchableOpacity
-                  style={styles.buttonLogin}
-                  onPress={handleLogin}
-                >
-                  <Text style={styles.textButton}>Login</Text>
-                </TouchableOpacity>
-                {/* 
+                <SafeAreaView style={styles.form}>
+                  <View>
+                    <View style={styles.inputBoxLogin}>
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Username"
+                        onChange={(n) => handleUserName(n)}
+                      />
+                    </View>
+                  </View>
+
+                  <View>
+                    <View style={styles.inputBoxLogin}>
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Password"
+                        secureTextEntry={!showPassword}
+                        onChange={(p) => handlePassword(p)}
+                      />
+                      <MaterialCommunityIcons
+                        name={!showPassword ? "eye-off" : "eye"}
+                        size={24}
+                        color="#aaa"
+                        onPress={toggleShowPasswordLogin}
+                        style={styles.icon}
+                      />
+                    </View>
+                  </View>
+                </SafeAreaView>
+
+                <View style={styles.buttonGroup}>
+                  <TouchableOpacity
+                    style={styles.buttonLogin}
+                    onPress={handleLogin}
+                  >
+                    <Text style={styles.textButton}>Login</Text>
+                  </TouchableOpacity>
+                  {/* 
                 <TouchableOpacity
                   style={styles.buttonSignup}
                   onPress={() => navigation.navigate("SignUp")}
                 >
                   <Text style={styles.textButton}>SignUp</Text>
                 </TouchableOpacity> */}
-                <View style={styles.buttonSignup}>
-                  <Text>Don't have an account?</Text>
-                  <TouchableOpacity onPress={() => setModalVisible(true)}>
-                    <Text style={styles.textButtonSignup}>Register</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </KeyboardAvoidingView>
-        </View>
-
-        {/* =========================Ini Modal SignUp ====================================*/}
-
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.containerModal}>
-            <KeyboardAvoidingView behavior={"position"} enabled={true}>
-              <ScrollView>
-                <View style={styles.viewModal}>
-                  <View style={styles.modalCard}>
-                    <Text style={styles.titleModal}>Register</Text>
-                    <View>
-                      <SafeAreaView style={styles.formModal}>
-                        <View>
-                          <View style={styles.inputBox}>
-                            <TextInput
-                              placeholder="Username"
-                              onChange={(n) => handleUserName(n)}
-                              style={styles.inputModal}
-                            />
-                          </View>
-                          {username.length == 0 ? (
-                            username.length > 4
-                          ) : userNameVerify ? null : (
-                            <Text style={styles.inputAllertFalse}>
-                              Minimal 4 character{" "}
-                            </Text>
-                          )}
-                        </View>
-
-                        <View>
-                          <View style={styles.inputBox}>
-                            <TextInput
-                              placeholder="Email"
-                              onChange={(e) => handleEmail(e)}
-                              style={styles.inputModal}
-                            />
-                          </View>
-                          {email.length == 0 ? (
-                            email.length > 1
-                          ) : emailVerify ? null : (
-                            <Text style={styles.inputAllertFalse}>
-                              Input correct email{" "}
-                            </Text>
-                          )}
-                        </View>
-
-                        <View>
-                          <View style={styles.inputBox}>
-                            <TextInput
-                              placeholder="Password"
-                              secureTextEntry={!showPassword}
-                              onChange={(p) => handlePassword(p)}
-                              style={styles.inputModalPassword}
-                            />
-
-                            <MaterialCommunityIcons
-                              name={showPassword ? "eye-off" : "eye"}
-                              size={24}
-                              color="#aaa"
-                              onPress={toggleShowPassword}
-                              style={styles.icon}
-                            />
-                          </View>
-
-                          {password.length == 0 ? (
-                            password.length > 1
-                          ) : passwordVerify ? null : (
-                            <Text style={styles.inputAllertFalsePassword}>
-                              Minimal 4 character{" "}
-                            </Text>
-                          )}
-                        </View>
-
-                        <View>
-                          <View style={styles.inputBox}>
-                            <TextInput
-                              placeholder="Password"
-                              secureTextEntry={!showPassword}
-                              onChange={(p1) => handlePasswordConfirm(p1)}
-                              style={styles.inputModalPassword}
-                            />
-                            <MaterialCommunityIcons
-                              name={showPassword ? "eye-off" : "eye"}
-                              size={24}
-                              color="#aaa"
-                              onPress={toggleShowPassword}
-                              style={styles.icon}
-                            />
-                          </View>
-                          {passwordConfirm == password ? null : (
-                            <Text style={styles.inputAllertFalsePassword}>
-                              Password doesn't match{" "}
-                            </Text>
-                          )}
-                        </View>
-                      </SafeAreaView>
-                    </View>
-                    <View style={styles.buttonGroup}>
-                      <TouchableOpacity
-                        style={styles.buttonModal}
-                        onPress={() => handleRegister()}
-                      >
-                        <Text style={styles.textButtonModal}>Register</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.buttonModal}
-                        onPress={() => setModalVisible(!modalVisible)}
-                      >
-                        <Text style={styles.textButtonModal}>Cancel</Text>
-                      </TouchableOpacity>
-                    </View>
+                  <View style={styles.buttonSignup}>
+                    <Text>Don't have an account?</Text>
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                      <Text style={styles.textButtonSignup}>Register</Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
-              </ScrollView>
+              </View>
             </KeyboardAvoidingView>
-          </View>
-        </Modal>
-      </ScrollView>
+
+            {/* =========================Ini Modal SignUp ====================================*/}
+
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.containerModal}>
+                <KeyboardAvoidingView behavior={"position"} enabled={true}>
+                  <ScrollView>
+                    <View style={styles.viewModal}>
+                      <View style={styles.modalCard}>
+                        <Text style={styles.titleModal}>Register</Text>
+                        <View>
+                          <SafeAreaView style={styles.formModal}>
+                            <View>
+                              <View style={styles.inputBox}>
+                                <TextInput
+                                  placeholder="Username"
+                                  onChange={(n) => handleUserName(n)}
+                                  style={styles.inputModal}
+                                />
+                              </View>
+                              {username.length == 0 ? (
+                                username.length > 4
+                              ) : userNameVerify ? null : (
+                                <Text style={styles.inputAllertFalse}>
+                                  Minimal 4 character{" "}
+                                </Text>
+                              )}
+                            </View>
+
+                            <View>
+                              <View style={styles.inputBox}>
+                                <TextInput
+                                  placeholder="Email"
+                                  onChange={(e) => handleEmail(e)}
+                                  style={styles.inputModal}
+                                />
+                              </View>
+                              {email.length == 0 ? (
+                                email.length > 1
+                              ) : emailVerify ? null : (
+                                <Text style={styles.inputAllertFalse}>
+                                  Input correct email{" "}
+                                </Text>
+                              )}
+                            </View>
+
+                            <View>
+                              <View style={styles.inputBox}>
+                                <TextInput
+                                  placeholder="Password"
+                                  secureTextEntry={!showPassword}
+                                  onChange={(p) => handlePassword(p)}
+                                  style={styles.inputModalPassword}
+                                />
+
+                                <MaterialCommunityIcons
+                                  name={showPassword ? "eye-off" : "eye"}
+                                  size={24}
+                                  color="#aaa"
+                                  onPress={toggleShowPassword}
+                                  style={styles.icon}
+                                />
+                              </View>
+
+                              {password.length == 0 ? (
+                                password.length > 1
+                              ) : passwordVerify ? null : (
+                                <Text style={styles.inputAllertFalsePassword}>
+                                  Minimal 4 character{" "}
+                                </Text>
+                              )}
+                            </View>
+
+                            <View>
+                              <View style={styles.inputBox}>
+                                <TextInput
+                                  placeholder="Password"
+                                  secureTextEntry={!showPassword}
+                                  onChange={(p1) => handlePasswordConfirm(p1)}
+                                  style={styles.inputModalPassword}
+                                />
+                                <MaterialCommunityIcons
+                                  name={showPassword ? "eye-off" : "eye"}
+                                  size={24}
+                                  color="#aaa"
+                                  onPress={toggleShowPassword}
+                                  style={styles.icon}
+                                />
+                              </View>
+                              {passwordConfirm == password ? null : (
+                                <Text style={styles.inputAllertFalsePassword}>
+                                  Password doesn't match{" "}
+                                </Text>
+                              )}
+                            </View>
+                          </SafeAreaView>
+                        </View>
+                        <View style={styles.buttonGroup}>
+                          <TouchableOpacity
+                            style={styles.buttonModal}
+                            onPress={() => handleRegister()}
+                          >
+                            <Text style={styles.textButtonModal}>Register</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={styles.buttonModal}
+                            onPress={() => setModalVisible(!modalVisible)}
+                          >
+                            <Text style={styles.textButtonModal}>Cancel</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
+                  </ScrollView>
+                </KeyboardAvoidingView>
+              </View>
+            </Modal>
+
+            {/* =========================Ini Modal SignUp ====================================*/}
+          </ScrollView>
+        </SafeAreaProvider>
+      </SafeAreaView>
     </ImageBackground>
   );
 }
@@ -333,11 +344,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
+    // backgroundColor: "#000",
   },
   containerModal: {
     flex: 1,
@@ -366,8 +379,12 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   form: {
+    flexDirection: "column",
     paddingHorizontal: 30,
     marginTop: 30,
+    // backgroundColor: "#FFE4C9",
+    justifyContent: "center",
+    alignSelf: "center",
   },
   formModal: {
     marginTop: 30,
@@ -440,9 +457,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   imageCountainer: {
+    flex: 1,
     width: "100%",
-    alignContent: "center",
-    paddingTop: 80,
+    alignSelf: "center",
+    padding: 30,
+    // backgroundColor: "#000",
   },
   mainImage: {
     alignSelf: "center",
@@ -461,16 +480,28 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
   },
-
+  card: {
+    // shadowColor: "black",
+    // shadowOffset: { width: 0, height: 0 },
+    // shadowRadius: 6,
+    // shadowOpacity: 0.26,
+    // backgroundColor: "#fff",
+    flex: 1,
+    // marginVertical: 80,
+    borderRadius: 40,
+    width: 400,
+    height: 800,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   deskripsiGroup: {
-    marginBottom: -40,
+    // marginTop: -100,
     padding: 24,
     width: "100%",
-    height: 150,
+    // height: 150,
     flex: 1,
     flexDirection: "column",
     backgroundColor: "#fff",
-    borderRadius: 40,
   },
   deskripsi: {
     textAlign: "center",
@@ -481,6 +512,8 @@ const styles = StyleSheet.create({
   },
   buttonGroup: {
     marginTop: 30,
+    // backgroundColor: "#000",
+    paddingHorizontal: 30,
   },
   textButton: {
     fontWeight: "700",
