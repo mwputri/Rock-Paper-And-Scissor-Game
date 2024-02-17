@@ -18,6 +18,9 @@ import React, { useState } from "react";
 import Leaderboard from "./Leaderboard";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// const Background = require("../../assets/bilal.jpeg");
 
 export default function Login({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -110,6 +113,24 @@ export default function Login({ navigation }) {
     setPasswordVerify(true);
   };
 
+  const handleLogin = () => {
+    const userData = {
+      username: username,
+      password: password,
+    };
+    axios
+      .post("http://localhost:3000/login", userData)
+      .then((res) => {
+        const { token, email } = res.data;
+        AsyncStorage.setItem("token", token);
+        AsyncStorage.setItem("email", email);
+        navigation.navigate("Leaderboard");
+      })
+      .catch((error) => {
+        console.error("Error Login", error);
+      });
+  };
+
   return (
     <ImageBackground resizeMode="cover" style={styles.background}>
       <SafeAreaView style={styles.container}>
@@ -159,7 +180,7 @@ export default function Login({ navigation }) {
                 <View style={styles.buttonGroup}>
                   <TouchableOpacity
                     style={styles.buttonLogin}
-                    onPress={() => navigation.navigate("Leaderboard")}
+                    onPress={handleLogin}
                   >
                     <Text style={styles.textButton}>Login</Text>
                   </TouchableOpacity>

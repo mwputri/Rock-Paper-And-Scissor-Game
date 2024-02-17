@@ -1,4 +1,3 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 const express = require('express');
 const cors = require('cors');
 
@@ -50,19 +49,22 @@ app.post('/registration', async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-    const oldUser = await User.findOne({ email: email });
-
-    if (!oldUser) {
-        return res.send({ status: "error", message: "User already exist" });
-    }
-
-    if (await bcrypt.compare(password, oldUser.password)) {
-        const token = jwt.sign({ email: oldUser.email }, JWT_SECRET);
-        await AsyncStorage.setItem('jwtToken', token);
-        return res.send({ status: "ok", data: token });
-    } else {
-        return res.send({ status: "error", message: "Incorrect password!" });
+    const { username, password } = req.body;
+    try {
+        const user = await User.findOne({ username: username });
+        if (!user) {
+            return res.status(404).json({ status: "error", message: "User not found" });
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (isPasswordValid) {
+            const token = jwt.sign({ email: user.email }, JWT_SECRET);
+            return res.status(200).json({ status: "ok", token: token, email: user.email });
+        } else {
+            return res.status(401).json({ status: "error", message: "Incorrect password" });
+        }
+    } catch (error) {
+        console.error("Error while logging in:", error);
+        return res.status(500).json({ status: "error", message: "Internal Server Error" });
     }
 });
 
