@@ -47,7 +47,7 @@ export default function Login({ navigation }) {
           console.log(res.data);
           if (res.data.status == "ok") {
             Alert.alert("Register Done!");
-            setModalVisible(false);
+            navigation.navigate("Login");
           } else {
             Alert.alert(JSON.stringify(res.data));
           }
@@ -155,7 +155,11 @@ export default function Login({ navigation }) {
                 <SafeAreaView style={styles.form}>
                   <View>
                     <View style={styles.inputBoxLogin}>
-                      <TextInput style={styles.input} placeholder="Username" />
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Username"
+                        onChange={(n) => handleUserName(n)}
+                      />
                     </View>
                   </View>
 
@@ -165,6 +169,7 @@ export default function Login({ navigation }) {
                         style={styles.input}
                         placeholder="Password"
                         secureTextEntry={!showPassword}
+                        onChange={(p) => handlePassword(p)}
                       />
                       <MaterialCommunityIcons
                         name={!showPassword ? "eye-off" : "eye"}
