@@ -9,55 +9,57 @@ import {
   ScrollView,
   ImageBackground,
   Alert,
-  Dimensions
+  Dimensions,
+  SafeAreaView,
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Login from "./Login";
 
 const HomeScreen = () => {
-  const { width, height } = Dimensions.get('window');
+  const { width, height } = Dimensions.get("window");
 };
-const background = require("../../assets/mainlogo.jpeg");
 
 export default function Home({ navigation }) {
   return (
     <ImageBackground resizeMode="cover" style={styles.background}>
       <StatusBar barStyle={"dark-content"} />
 
-      <View style={styles.container}>
-        <View style={styles.imageCountainer}>
-          <Image
-            style={styles.mainImage}
-            source={require("../../assets/mainlogo.jpeg")}
-          />
-        </View>
+      <SafeAreaView style={styles.container}>
+        <SafeAreaProvider>
+          <View style={styles.imageCountainer}>
+            <Image
+              style={styles.mainImage}
+              source={require("../../assets/mainlogo.jpeg")}
+            />
+          </View>
 
-        <ScrollView>
-          <View style={styles.card}>
-            <View style={styles.deskripsiGroup}>
-              <Text style={styles.title}>Welcome to </Text>
-              <Text style={styles.bakegu}>BAKEGU</Text>
-              <Text style={styles.deskripsi}>
-                Mainkan Game ini dan dapatkan kesempatan undian berhadiah
-                menarik!
-              </Text>
+          <ScrollView>
+            <View style={styles.card}>
+              <View style={styles.deskripsiGroup}>
+                <Text style={styles.title}>Welcome to </Text>
+                <Text style={styles.bakegu}>BAKEGU</Text>
+                <Text style={styles.deskripsi}>
+                  Mainkan Game ini dan dapatkan kesempatan undian berhadiah
+                  menarik!
+                </Text>
 
-              <View style={styles.buttonGroup}>
-                <TouchableOpacity
-                  style={styles.buttonMain}
-                  onPress={() => navigation.navigate("Login")}
-                >
-                  <Text style={styles.textButton}>Main yu!</Text>
-                </TouchableOpacity>
+                <View style={styles.buttonGroup}>
+                  <TouchableOpacity
+                    style={styles.buttonMain}
+                    onPress={() => navigation.navigate("Login")}
+                  >
+                    <Text style={styles.textButton}>Main yu!</Text>
+                  </TouchableOpacity>
 
-                {/* <TouchableOpacity style={styles.buttonSignup} onPress={""}>
+                  {/* <TouchableOpacity style={styles.buttonSignup} onPress={""}>
               <Text style={styles.textButton}>Sign Up</Text>
             </TouchableOpacity> */}
+                </View>
               </View>
             </View>
-          </View>
-        </ScrollView>
-      </View>
+          </ScrollView>
+        </SafeAreaProvider>
+      </SafeAreaView>
     </ImageBackground>
   );
 }
@@ -66,7 +68,6 @@ const styles = StyleSheet.create({
   background: {
     backgroundColor: "#FEF6E1",
     flex: 1,
-    alignItems: "center",
     justifyContent: "flex-start",
   },
   card: {
@@ -75,14 +76,13 @@ const styles = StyleSheet.create({
     // shadowRadius: 6,
     // shadowOpacity: 0.26,
     // backgroundColor: "#fff",
-    marginTop: "80%",
-    borderRadius: 40,
     flex: 1,
+    // marginVertical: 80,
+    borderRadius: 40,
     width: 400,
-    height: 400,
+    height: 800,
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 10,
   },
   container: {
     flex: 1,
@@ -114,23 +114,23 @@ const styles = StyleSheet.create({
     color: "#F6B17A",
   },
   deskripsiGroup: {
-    paddingVertical: 60,
+    paddingVertical: 30,
     backgroundColor: "#fff",
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     flexDirection: "column",
     alignItems: "center",
-    borderRadius: 30,
+    borderRadius: 40,
+    width: "85%",
+    height: 400,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 6,
     shadowOpacity: 0.26,
-    width: 340,
-    height: 400,
   },
   deskripsi: {
     textAlign: "center",
     fontWeight: "700",
-    marginTop: 30,
+    marginTop: 20,
     fontSize: 16,
   },
   buttonGroup: {
