@@ -18,8 +18,9 @@ import React, { useState } from "react";
 import Leaderboard from "./Leaderboard";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Background = require("../../assets/bilal.jpeg");
+// const Background = require("../../assets/bilal.jpeg");
 
 export default function Login({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -112,6 +113,22 @@ export default function Login({ navigation }) {
     setPasswordVerify(true);
   };
 
+
+  const handleLogin =() =>{
+    const userData={
+      username: username,
+      password: password,
+    }
+    axios.post("http://localhost:3000/login", userData).then((res)=>{
+      const {token, email}=res.data;
+      AsyncStorage.setItem('token', token);
+      AsyncStorage.setItem('email', email);
+      navigation.navigate('Leaderboard');
+    }).catch((error)=>{
+      console.error('Error Login',error );
+    });
+  };
+
   return (
     <ImageBackground resizeMode="cover" style={styles.background}>
       <ScrollView>
@@ -133,7 +150,9 @@ export default function Login({ navigation }) {
               <SafeAreaView style={styles.form}>
                 <View>
                   <View style={styles.inputBoxLogin}>
-                    <TextInput style={styles.input} placeholder="Username" />
+                    <TextInput style={styles.input}
+                              onChange={(n) => handleUserName(n)}
+                              placeholder="Username" />
                   </View>
                 </View>
                 <View>
@@ -142,6 +161,7 @@ export default function Login({ navigation }) {
                       style={styles.input}
                       placeholder="Password"
                       secureTextEntry={!showPassword}
+                      onChange={(p) => handlePassword(p)}
                     />
                     <MaterialCommunityIcons
                       name={!showPassword ? "eye-off" : "eye"}
@@ -157,7 +177,7 @@ export default function Login({ navigation }) {
               <View style={styles.buttonGroup}>
                 <TouchableOpacity
                   style={styles.buttonLogin}
-                  onPress={() => navigation.navigate("Leaderboard")}
+                  onPress={handleLogin}
                 >
                   <Text style={styles.textButton}>Login</Text>
                 </TouchableOpacity>
