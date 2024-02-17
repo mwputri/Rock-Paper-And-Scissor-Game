@@ -9,13 +9,10 @@ import {
 import Home from "./src/screens/Home";
 import Login from "./src/screens/Login";
 import Leaderboard from "./src/screens/Leaderboard";
+import RondeModal from "./src/screens/RondeModal";
+import Main from "./src/screens/Main";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
-// const App = () => {
-//   return <Home />;
-// };
-// export default App;
 
 const Stack = createStackNavigator();
 
@@ -38,19 +35,15 @@ const App = () => {
           component={Leaderboard}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+        name="RondeModal"
+        component={RondeModal}
+        options={{ headerShown: false }}
+      />
       </Stack.Navigator>
     </NavigationContainer>
-    // <Home />
   );
 };
 
 export default App;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FEF6E1",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-});
