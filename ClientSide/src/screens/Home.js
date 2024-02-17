@@ -9,10 +9,14 @@ import {
   ScrollView,
   ImageBackground,
   Alert,
+  Dimensions
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Login from "./Login";
 
+const HomeScreen = () => {
+  const { width, height } = Dimensions.get('window');
+};
 const background = require("../../assets/mainlogo.jpeg");
 
 export default function Home({ navigation }) {
