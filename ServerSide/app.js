@@ -1,4 +1,4 @@
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const express = require('express');
 const cors = require('cors');
 
@@ -59,6 +59,7 @@ app.post("/login", async (req, res) => {
 
     if (await bcrypt.compare(password, oldUser.password)) {
         const token = jwt.sign({ email: oldUser.email }, JWT_SECRET);
+        await AsyncStorage.setItem('jwtToken', token);
         return res.send({ status: "ok", data: token });
     } else {
         return res.send({ status: "error", message: "Incorrect password!" });

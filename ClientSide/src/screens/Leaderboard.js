@@ -2,6 +2,7 @@ import React, { useState, useEffect }  from 'react';
 import { FlatList, View, Text, StyleSheet, Image, TouchableOpacity, ScrollView} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import LogoutButton from '../components/LogoutButton';
 
 const Leaderboard = ({ }) => {
   const [userData, setUserData] = useState([]);
@@ -39,26 +40,38 @@ const fetchData = async () => {
  {/* <TouchableOpacity style={[styles.profileButton, {alignItems:'flex-end'}]} onPress={() => navigation.navigate('Profile')}>
         <Image source={require('../assets/Profile.png')} style={styles.profileIcon} />
       </TouchableOpacity> */}
-      <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('Profile')}>
+      {/* <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('Profile')}>
         <Text style={ [styles.buttonText, {fontWeight:'normal', fontSize:'14'}] }>Logout</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      <LogoutButton />
       </View>
       
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Image source={require('../../assets/Leaderboard.png')} style={styles.image} />
+
         <Text style={styles.title}>LEADERBOARD</Text>
-        
+
+
         <View style={styles.header}>
           <Text style={[styles.headerText, {marginRight:35}]}>   </Text>
           <Text style={[styles.headerText, {marginRight:140}]}>Name</Text>
           <Text style={styles.headerText}>Score</Text>
         </View>
 
-        <FlatList
+        <ScrollView style={styles.scrollView}>
+        {userData.map((player, index) => (
+          <View key={index} style={styles.playerContainer}>
+            <Text style={styles.playerName}>{player.name}</Text>
+            <Text style={styles.playerScore}>{player.totalScore}</Text>
+          </View>
+        ))}
+      </ScrollView>
+
+        {/* <FlatList
           data={userData}
           renderItem={({ item, index }) => <Item data={item} index={index} />}
           keyExtractor={item => item._id}
-        />        
+        />         */}
       </View>
       
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -80,6 +93,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  scrollView: {
+    width: '80%',
+    maxHeight: '50%',
+  },
+  playerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    marginVertical: 5,
+    backgroundColor: '#f0f0f0',
+  },
+  playerName: {
+    fontSize: 18,
+  },
+  playerScore: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
   logoutButton: {
     width:80,
     height: 30,
@@ -94,7 +126,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
-    position:'absolute',
+    //position:'absolute',
     top: 10,
     right:10,
   },
