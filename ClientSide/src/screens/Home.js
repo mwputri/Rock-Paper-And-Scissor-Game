@@ -13,13 +13,28 @@ import {
   SafeAreaView,
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import Login from "./Login";
-
-const HomeScreen = () => {
-  const { width, height } = Dimensions.get("window");
-};
+import { useFonts } from "expo-font";
 
 export default function Home({ navigation }) {
+  const [fontsLoaded, fontError] = useFonts({
+    "Roboto-Black": require("../../assets/fonts/Roboto-Black.ttf"),
+    "Roboto-BlackItalic": require("../../assets/fonts/Roboto-BlackItalic.ttf"),
+    "Roboto-Bold": require("../../assets/fonts/Roboto-Bold.ttf"),
+    "Roboto-BoldItalic": require("../../assets/fonts/Roboto-BoldItalic.ttf"),
+    "Roboto-Light": require("../../assets/fonts/Roboto-Light.ttf"),
+    "Roboto-LightItalic": require("../../assets/fonts/Roboto-LightItalic.ttf"),
+    "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
+    "Roboto-MediumItalic": require("../../assets/fonts/Roboto-MediumItalic.ttf"),
+    "Roboto-Regular": require("../../assets/fonts/Roboto-Regular.ttf"),
+    "Roboto-Thin": require("../../assets/fonts/Roboto-Thin.ttf"),
+    "Roboto-ThinItalic": require("../../assets/fonts/Roboto-ThinItalic.ttf"),
+  });
+
+  // Function to handle font not loaded
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
   return (
     <ImageBackground resizeMode="cover" style={styles.background}>
       <StatusBar barStyle={"dark-content"} />
@@ -36,7 +51,7 @@ export default function Home({ navigation }) {
           <ScrollView>
             <View style={styles.card}>
               <View style={styles.deskripsiGroup}>
-                <Text style={styles.title}>Welcome to </Text>
+                <Text style={styles.title}>Ayo Bermain</Text>
                 <Text style={styles.bakegu}>BAKEGU</Text>
                 <Text style={styles.deskripsi}>
                   Mainkan Game ini dan dapatkan kesempatan undian berhadiah
@@ -101,13 +116,13 @@ const styles = StyleSheet.create({
     height: 400,
   },
   title: {
-    fontFamily: "Helvetica",
-    fontSize: 50,
+    fontFamily: "Roboto-Black",
+    fontSize: 44,
     fontWeight: "800",
     textAlign: "center",
   },
   bakegu: {
-    fontFamily: "Helvetica",
+    fontFamily: "Roboto-Regular",
     fontSize: 50,
     fontWeight: "400",
     textAlign: "center",
@@ -121,13 +136,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 40,
     width: "85%",
-    height: 400,
+    // height: 400,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 6,
     shadowOpacity: 0.26,
   },
   deskripsi: {
+    fontFamily: "Roboto-Medium",
     textAlign: "center",
     fontWeight: "700",
     marginTop: 20,
@@ -139,12 +155,13 @@ const styles = StyleSheet.create({
   },
   textButton: {
     fontWeight: "600",
-    fontSize: 24,
+    fontSize: 22,
     color: "#fff",
     shadowColor: "black",
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 4,
     shadowOpacity: 0.25,
+    fontFamily: "Roboto-Medium",
   },
   buttonMain: {
     padding: 15,

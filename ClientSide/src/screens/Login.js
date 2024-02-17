@@ -12,13 +12,15 @@ import {
   Modal,
   ImageBackground,
   Alert,
+  Platform,
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import React, { useState } from "react";
-import Leaderboard from "./Leaderboard";
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFonts } from "expo-font";
 
 // const Background = require("../../assets/bilal.jpeg");
 
@@ -34,6 +36,25 @@ export default function Login({ navigation }) {
   const [passwordVerifyConfirm, setPasswordVerifyConfirm] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const [fontsLoaded, fontError] = useFonts({
+    "Roboto-Black": require("../../assets/fonts/Roboto-Black.ttf"),
+    "Roboto-BlackItalic": require("../../assets/fonts/Roboto-BlackItalic.ttf"),
+    "Roboto-Bold": require("../../assets/fonts/Roboto-Bold.ttf"),
+    "Roboto-BoldItalic": require("../../assets/fonts/Roboto-BoldItalic.ttf"),
+    "Roboto-Light": require("../../assets/fonts/Roboto-Light.ttf"),
+    "Roboto-LightItalic": require("../../assets/fonts/Roboto-LightItalic.ttf"),
+    "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
+    "Roboto-MediumItalic": require("../../assets/fonts/Roboto-MediumItalic.ttf"),
+    "Roboto-Regular": require("../../assets/fonts/Roboto-Regular.ttf"),
+    "Roboto-Thin": require("../../assets/fonts/Roboto-Thin.ttf"),
+    "Roboto-ThinItalic": require("../../assets/fonts/Roboto-ThinItalic.ttf"),
+  });
+
+  // Function to handle font not loaded
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
   const handleRegister = () => {
     const userData = {
       username: username,
@@ -47,7 +68,7 @@ export default function Login({ navigation }) {
           console.log(res.data);
           if (res.data.status == "ok") {
             Alert.alert("Register Done!");
-            navigation.navigate("Login");
+            setModalVisible(false);
           } else {
             Alert.alert(JSON.stringify(res.data));
           }
@@ -55,7 +76,7 @@ export default function Login({ navigation }) {
 
         .catch((e) => console.log(e));
     } else {
-      Alert.alert("Fill mandatory details!");
+      Alert.alert("Lengkapi data anda!");
     }
   };
 
@@ -125,9 +146,15 @@ export default function Login({ navigation }) {
         AsyncStorage.setItem("token", token);
         AsyncStorage.setItem("email", email);
         navigation.navigate("Leaderboard");
+        if (res.data.status == "ok") {
+          Alert.alert("Selamat Bermain!");
+        } else {
+          Alert.alert(JSON.stringify(res.data));
+        }
       })
       .catch((error) => {
-        console.error("Error Login", error);
+        // console.error("Error Login", error);
+        Alert.alert("Coba Lagi!");
       });
   };
 
@@ -136,7 +163,7 @@ export default function Login({ navigation }) {
       <SafeAreaView style={styles.container}>
         <SafeAreaProvider>
           <ScrollView>
-            <View style={styles.imageCountainer}>
+            <View style={styles.imageContainer}>
               <Image
                 style={styles.mainImage}
                 source={require("../../assets/loginimage.jpeg")}
@@ -145,10 +172,9 @@ export default function Login({ navigation }) {
             <KeyboardAvoidingView behavior={"position"} enabled={true}>
               <View style={styles.deskripsiGroup}>
                 <View>
-                  <Text style={styles.title}>Login!</Text>
+                  <Text style={styles.title}>Masuk!</Text>
                   <Text style={styles.deskripsi}>
-                    Sign in with your data that you have entered during your
-                    registration
+                    Masukan data kamu secara benar ya!
                   </Text>
                 </View>
 
@@ -157,7 +183,7 @@ export default function Login({ navigation }) {
                     <View style={styles.inputBoxLogin}>
                       <TextInput
                         style={styles.input}
-                        placeholder="Username"
+                        placeholder="Nama Pengguna"
                         onChange={(n) => handleUserName(n)}
                       />
                     </View>
@@ -167,7 +193,7 @@ export default function Login({ navigation }) {
                     <View style={styles.inputBoxLogin}>
                       <TextInput
                         style={styles.input}
-                        placeholder="Password"
+                        placeholder="Kata Sandi"
                         secureTextEntry={!showPassword}
                         onChange={(p) => handlePassword(p)}
                       />
@@ -187,7 +213,7 @@ export default function Login({ navigation }) {
                     style={styles.buttonLogin}
                     onPress={handleLogin}
                   >
-                    <Text style={styles.textButton}>Login</Text>
+                    <Text style={styles.textButton}>Masuk</Text>
                   </TouchableOpacity>
                   {/* 
                 <TouchableOpacity
@@ -197,9 +223,11 @@ export default function Login({ navigation }) {
                   <Text style={styles.textButton}>SignUp</Text>
                 </TouchableOpacity> */}
                   <View style={styles.buttonSignup}>
-                    <Text>Don't have an account?</Text>
+                    <Text style={{ fontFamily: "Roboto-Regular" }}>
+                      Belum punya akun?
+                    </Text>
                     <TouchableOpacity onPress={() => setModalVisible(true)}>
-                      <Text style={styles.textButtonSignup}>Register</Text>
+                      <Text style={styles.textButtonSignup}>Daftar</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -218,17 +246,21 @@ export default function Login({ navigation }) {
               }}
             >
               <View style={styles.containerModal}>
-                <KeyboardAvoidingView behavior={"position"} enabled={true}>
+                <KeyboardAvoidingView
+                  behavior={"position"}
+                  enabled={true}
+                  keyboardVerticalOffset={Platform.OS === "ios" ? -200 : 0}
+                >
                   <ScrollView>
                     <View style={styles.viewModal}>
                       <View style={styles.modalCard}>
-                        <Text style={styles.titleModal}>Register</Text>
+                        <Text style={styles.titleModal}>Registrasi</Text>
                         <View>
                           <SafeAreaView style={styles.formModal}>
                             <View>
                               <View style={styles.inputBox}>
                                 <TextInput
-                                  placeholder="Username"
+                                  placeholder="Nama Pengguna"
                                   onChange={(n) => handleUserName(n)}
                                   style={styles.inputModal}
                                 />
@@ -237,7 +269,7 @@ export default function Login({ navigation }) {
                                 username.length > 4
                               ) : userNameVerify ? null : (
                                 <Text style={styles.inputAllertFalse}>
-                                  Minimal 4 character{" "}
+                                  Minimal 4 karakter!{" "}
                                 </Text>
                               )}
                             </View>
@@ -254,7 +286,7 @@ export default function Login({ navigation }) {
                                 email.length > 1
                               ) : emailVerify ? null : (
                                 <Text style={styles.inputAllertFalse}>
-                                  Input correct email{" "}
+                                  Masukkan email yang benar!{" "}
                                 </Text>
                               )}
                             </View>
@@ -262,7 +294,7 @@ export default function Login({ navigation }) {
                             <View>
                               <View style={styles.inputBox}>
                                 <TextInput
-                                  placeholder="Password"
+                                  placeholder="Kata Sandi"
                                   secureTextEntry={!showPassword}
                                   onChange={(p) => handlePassword(p)}
                                   style={styles.inputModalPassword}
@@ -281,7 +313,7 @@ export default function Login({ navigation }) {
                                 password.length > 1
                               ) : passwordVerify ? null : (
                                 <Text style={styles.inputAllertFalsePassword}>
-                                  Minimal 4 character{" "}
+                                  Minimal 4 karakter!{" "}
                                 </Text>
                               )}
                             </View>
@@ -289,7 +321,7 @@ export default function Login({ navigation }) {
                             <View>
                               <View style={styles.inputBox}>
                                 <TextInput
-                                  placeholder="Password"
+                                  placeholder="Kata Sandi"
                                   secureTextEntry={!showPassword}
                                   onChange={(p1) => handlePasswordConfirm(p1)}
                                   style={styles.inputModalPassword}
@@ -304,7 +336,7 @@ export default function Login({ navigation }) {
                               </View>
                               {passwordConfirm == password ? null : (
                                 <Text style={styles.inputAllertFalsePassword}>
-                                  Password doesn't match{" "}
+                                  Kata sandi tidak sama!{" "}
                                 </Text>
                               )}
                             </View>
@@ -315,13 +347,15 @@ export default function Login({ navigation }) {
                             style={styles.buttonModal}
                             onPress={() => handleRegister()}
                           >
-                            <Text style={styles.textButtonModal}>Register</Text>
+                            <Text style={styles.textButtonModal}>Daftar</Text>
                           </TouchableOpacity>
                           <TouchableOpacity
-                            style={styles.buttonModal}
+                            style={styles.buttonModalClose}
                             onPress={() => setModalVisible(!modalVisible)}
                           >
-                            <Text style={styles.textButtonModal}>Cancel</Text>
+                            <Text style={styles.textButtonModalCancel}>
+                              Batal
+                            </Text>
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -399,6 +433,8 @@ const styles = StyleSheet.create({
     // borderBottomWidth: 1,
     // padding: 10,
     width: "90%",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
   },
   inputBox: {
     flexDirection: "row",
@@ -430,6 +466,8 @@ const styles = StyleSheet.create({
     height: 40,
     width: 250,
     backgroundColor: "#FFE4C9",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
   },
   inputModalPassword: {
     flexDirection: "row",
@@ -437,26 +475,30 @@ const styles = StyleSheet.create({
     height: 40,
     width: 220,
     padding: 14,
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
     // backgroundColor: "#fff",
   },
   inputAllertFalse: {
     color: "red",
     fontSize: 10,
-    marginLeft: 20,
+    marginLeft: 10,
     marginTop: -10,
+    fontFamily: "Roboto-Light",
   },
   inputAllertFalsePassword: {
     color: "red",
     fontSize: 10,
-    marginLeft: 20,
+    marginLeft: 10,
     marginTop: -10,
+    fontFamily: "Roboto-Light",
   },
   icon: {
     // backgroundColor: "#FFE4C9",
     // height: 40,
     marginRight: 10,
   },
-  imageCountainer: {
+  imageContainer: {
     flex: 1,
     width: "100%",
     alignSelf: "center",
@@ -469,13 +511,13 @@ const styles = StyleSheet.create({
     height: 250,
   },
   title: {
-    fontFamily: "Helvetica",
-    fontSize: 24,
+    fontFamily: "Roboto-Black",
+    fontSize: 30,
     fontWeight: "700",
     textAlign: "center",
   },
   titleModal: {
-    fontFamily: "Helvetica",
+    fontFamily: "Roboto-Black",
     fontSize: 28,
     fontWeight: "700",
     textAlign: "center",
@@ -504,9 +546,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   deskripsi: {
+    fontFamily: "Roboto-Regular",
     textAlign: "center",
     fontWeight: "300",
-    marginTop: 10,
+    marginTop: 20,
     fontSize: 16,
     marginHorizontal: 40,
   },
@@ -516,6 +559,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   textButton: {
+    fontFamily: "Roboto-Medium",
     fontWeight: "700",
     fontSize: 20,
     textAlign: "center",
@@ -526,6 +570,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
   },
   textButtonSignup: {
+    fontFamily: "Roboto-Black",
     fontWeight: "700",
     fontSize: 14,
     color: "#000",
@@ -533,6 +578,7 @@ const styles = StyleSheet.create({
     paddingLeft: 6,
   },
   textButtonModal: {
+    fontFamily: "Roboto-Medium",
     fontWeight: "600",
     fontSize: 20,
     color: "#fff",
@@ -540,6 +586,17 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 4,
     shadowOpacity: 0.25,
+    textAlign: "center",
+  },
+  textButtonModalCancel: {
+    fontFamily: "Roboto-Medium",
+    fontWeight: "600",
+    fontSize: 20,
+    color: "#858484",
+    // shadowColor: "black",
+    // shadowOffset: { width: 0, height: 4 },
+    // shadowRadius: 4,
+    // shadowOpacity: 0.25,
     textAlign: "center",
   },
   buttonLogin: {
@@ -584,6 +641,21 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 40,
     backgroundColor: "#F6B17A",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonModalClose: {
+    padding: 12,
+    paddingHorizontal: 40,
+    margin: 10,
+    borderRadius: 40,
+    backgroundColor: "#FFE4C9",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

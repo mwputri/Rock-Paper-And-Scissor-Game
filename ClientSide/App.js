@@ -40,14 +40,8 @@ const App = () => {
         component={RondeModal}
         options={{ headerShown: false }}
       />
-        <Stack.Screen
-        name="Main"
-        component={Main}
-        options={{ headerShown: false }}
-      />
       </Stack.Navigator>
     </NavigationContainer>
-
   );
 };
 
