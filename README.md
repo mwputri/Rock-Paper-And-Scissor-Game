@@ -5,7 +5,7 @@ Bakegu adalah permainan batu, kertas, gunting yang dibangun menggunakan react na
 
 <h3>Desain & FrontEnd</h3>
 1. Amanda Ardelia
-2. Clara Nirmalasari
+2.   Clara Nirmalasari
 3. MW Putri
 4. Taqiyatuzzahra A
 
