@@ -49,16 +49,25 @@ export default function Main({ route }) {
   const [showWinScreen, setshowWinScreen] = useState(showScreen);
 
   useEffect(() => {
-    setRoundsRemaining(round); // Atur nilai roundsRemaining saat komponen dimuat atau nilai ronde berubah
-  }, [round]);
-
+    if (roundsRemaining === 0) {
+      if (playerWins > compWins ) {
+        setshowWinScreen(true);
+      } else if (compWins > playerWins){
+        setshowLoseScreen(true);
+      }else{
+        setshowLoseScreen(true);
+      }
+    } 
+  }, [roundsRemaining, playerWins, compWins]);
 
   const generateComputerChoice = () => {
     return choices[Math.floor(Math.random() * choices.length)];
   };
 
   const playRound = (playerChoice) => {
-    if (roundsRemaining === 0) return;
+    if (roundsRemaining <= 0) {
+      return;
+    }
     const computerChoice = generateComputerChoice();
     const newPlayerChoice = choices.find(choice => choice.name === playerChoice);
 
@@ -66,34 +75,26 @@ export default function Main({ route }) {
     setComputerChoice(computerChoice);
 
     if (playerChoice === computerChoice.name) {
+      
     } else if (
       (playerChoice === 'rock' && computerChoice.name === 'scissors') ||
       (playerChoice === 'paper' && computerChoice.name === 'rock') ||
       (playerChoice === 'scissors' && computerChoice.name === 'paper')
     ) {
       setPlayerWins(playerWins + 1);
-
     } else {
       setCompWins(compWins + 1);
     }
+
     setRoundsRemaining(roundsRemaining - 1);
-
-    if (roundsRemaining === 1) {
-      if (playerWins > compWins) {
-        setshowWinScreen(true);
-      } else {
-        setshowLoseScreen(true);
-      }
-    }
-
 
   };
 
-  console.log(playerWins);
+console.log(roundsRemaining, playerWins, compWins, showWinScreen,showLoseScreen)
 
   const handleUpdateScore = async (email, playerWins) => {
     try {
-      const response = await axios.post("https://a77f-114-10-24-1.ngrok-free.app/update-score", {
+      const response = await axios.post("https://localhost:3000/update-score", {
       token : token,  
       email: email,
         newScore: playerWins
@@ -225,6 +226,7 @@ export default function Main({ route }) {
                 setPlayerChoice(''); // Mengosongkan playerChoice
                 setComputerChoice(''); // Mengosongkan computerChoice
                 setPlayerWins(0);
+                setCompWins(0);
               }}
               playerWinss = {playerWins}
               tokens = {token}
@@ -240,6 +242,7 @@ export default function Main({ route }) {
                 setPlayerChoice(''); // Mengosongkan playerChoice
                 setComputerChoice(''); // Mengosongkan computerChoice
                 setPlayerWins(0);
+                setCompWins(0);
               }}
               playerWinss = {playerWins}
               tokens = {token}
