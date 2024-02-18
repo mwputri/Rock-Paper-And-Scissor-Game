@@ -5,10 +5,9 @@ const app = express();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
-//const mongoUrl = "mongodb+srv://nuralibasyah:my7pHh3ly1Zub86q@cluster0.ozivslz.mongodb.net/?retryWrites=true&w=majority";
-const mongoUrl = "mongodb+srv://nuralibasyah:${process.env.MONGO_PASSWORD}@cluster0.ozivslz.mongodb.net/?retryWrites=true&w=majority";
-
+ 
+const mongoUrl = "mongodb+srv://nuralibasyah:my7pHh3ly1Zub86q@cluster0.ozivslz.mongodb.net/?retryWrites=true&w=majority";
+//const mongoUrl = "mongodb+srv://nuralibasyah:${process.env.MONGO_PASSWORD}@cluster0.ozivslz.mongodb.net/?retryWrites=true&w=majority";
 const JWT_SECRET = "your_secret_key_here"; // Ganti dengan kunci rahasia yang sebenarnya 
 
 mongoose
