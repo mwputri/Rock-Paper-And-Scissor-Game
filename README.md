@@ -1,5 +1,6 @@
 # Rock-Paper-And-Scissor-Game
 Make Rock Paper And Scissor Game Using React Native expo
+./ClientSide/assets/Logo.png
 
 Bakegu adalah permainan batu, kertas, gunting yang dibangun menggunakan react native. Game ini dimainkan oleh manusia yang memiliki akun Bakegu melawan randomize dari komputer yang sudah di atur sedemikian rupa. Sebelum bermain, pemain dapat melihat leaderboard dari daftar pemain lain yang sudah lebih dahulu memainkannya. Kemudian pemain dapat memilih ronde yang akan dimainkan, dan ketika permainan selesai, pemain akan diberikan hasil dari keseluruhan ronde permainan yang dimainkan, menang ataupun kalah.
 
