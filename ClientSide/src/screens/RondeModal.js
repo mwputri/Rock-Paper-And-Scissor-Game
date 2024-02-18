@@ -33,6 +33,7 @@ export default function RondeModal({ navigation, route }) {
             <Text style={{ fontSize: 18, color: "#1B1A55" }}>
               Pilih babak kamu!
             </Text>
+            <Text>Anda memilih {(!round) ? "..." : round} babak </Text>
           </LinearGradient>
           <LinearGradient
             // Title Linear Gradient install LinearGradient and inport
@@ -42,7 +43,7 @@ export default function RondeModal({ navigation, route }) {
             <Text
               style={{ fontSize: 32, color: "#1B1A55", fontWeight: "bold" }}
             >
-              BABAK
+              BABAK 
             </Text>
           </LinearGradient>
         </View>
