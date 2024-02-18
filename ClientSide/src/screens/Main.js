@@ -2,17 +2,17 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
   TouchableOpacity,
-  StatusBar,
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+
 import InsetShadow from "react-native-inset-shadow";
 import { useState } from "react";
 import RondeModal from "./RondeModal";
+import ModalWin from "./ModalWin";
+import LoseModal from "./LoseModal";
 
 export default function Main({ navigation }) {
   const [isType, setIsType] = useState("");
@@ -27,7 +27,7 @@ export default function Main({ navigation }) {
     Kertas: require(`../../assets/Kertas.png`),
   };
   return (
-    <SafeAreaProvider>
+    <ScrollView>
       <View style={styles.container}>
         <Image style={styles.Logo} source={require("../../assets/Logo.png")} />
         <View style={styles.BattleTitle}>
@@ -42,8 +42,8 @@ export default function Main({ navigation }) {
           ]}
         >
           <View style={{ flexDirection: "column" }}>
-            <Text style={{ fontSize: 18, marginLeft: 90 }}>Aku</Text>
-            <View style={styles.Box}>
+            <Text style={{ fontSize: 18, marginLeft: 110 }}>Aku</Text>
+            <View style={[styles.Box, { marginLeft: 70 }]}>
               <InsetShadow>
                 <Image
                   style={[styles.fingers, { marginTop: 18, marginLeft: 15 }]}
@@ -51,20 +51,20 @@ export default function Main({ navigation }) {
                 />
               </InsetShadow>
             </View>
-            <View style={styles.Me}></View>
+            <View style={[styles.Score, { marginLeft: 85 }]}></View>
           </View>
           <Text style={{ fontSize: 30, fontWeight: "bold", marginBottom: 50 }}>
             VS
           </Text>
           <View style={{ flexDirection: "column" }}>
-            <Text style={{ fontSize: 18, marginLeft: 70 }}>Komputer</Text>
-            <View style={styles.Box}>
-              <InsetShadow></InsetShadow>
+            <Text style={{ fontSize: 18, marginLeft: 60 }}>Komputer</Text>
+            <View style={[styles.Box, { marginLeft: 30 }]}>
+              <InsetShadow />
             </View>
-            <View style={styles.Me}></View>
+            <View style={styles.Score}></View>
           </View>
         </SafeAreaView>
-        <View style={{ flex: 1, flexDirection: "row", marginTop: 100 }}>
+        <View style={{ flex: 1, flexDirection: "row", marginTop: 50 }}>
           <TouchableOpacity
             style={styles.boxbgk}
             onPress={() => handlerHands("Batu")}
@@ -135,8 +135,16 @@ export default function Main({ navigation }) {
         >
           <Text style={styles.textButton}>Berhenti</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate("ModalWin")}>
+          <Text style={styles.ButtonBerhenti}>Tes Win</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate("LoseModal")}>
+          <Text style={styles.ButtonBerhenti}>Tes Lose</Text>
+        </TouchableOpacity>
       </View>
-    </SafeAreaProvider>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -167,13 +175,10 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     backgroundColor: "#FEF6E1",
-    marginLeft: 50,
     marginTop: 10,
   },
+
   Score: {
-    flexDirection: "row",
-  },
-  Me: {
     width: 80,
     height: 40,
     backgroundColor: "#F6B17A",
@@ -214,6 +219,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 50,
     marginBottom: 50,
     shadowColor: "#000",
     shadowOffset: {
