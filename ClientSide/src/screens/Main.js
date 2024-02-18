@@ -41,8 +41,9 @@ export default function Main({ route }) {
   const [playerChoice, setPlayerChoice] = useState('');
   const [computerChoice, setComputerChoice] = useState('');
   
-  const [round, setRound] = useState(1);
-  
+  const [round, setRound] = useState(route.params.round);
+  const [token, setToken] = useState(route.params.token);
+  const [email, setEmail] = useState(route.params.email);
   const [playerWins, setPlayerWins] = useState(0);
   const [compWins, setCompWins] = useState(0);
 
@@ -68,6 +69,7 @@ export default function Main({ route }) {
     ) {
       setPlayerWins(playerWins + 1);
       setshowWinScreen(true);
+
     } else {
       setCompWins(compWins + 1);
       setshowLoseScreen(true);
@@ -77,8 +79,28 @@ export default function Main({ route }) {
       setRound(round + 1);
     }else{
       setRound(1);
-    }  
+  // handleUpdateScore(email, playerWins);
+
+    } 
+
   };
+
+  console.log(playerWins);
+
+  const handleUpdateScore = async (email, playerWins) => {
+    try {
+      const response = await axios.post("https://a77f-114-10-24-1.ngrok-free.app/update-score", {
+      token : token,  
+      email: email,
+        newScore: playerWins
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error updating score:", error);
+      throw error;
+    }
+  };
+
 
   const ChoiceCard = ({ player, choice: { name, uri }}) => {
   
@@ -193,20 +215,28 @@ export default function Main({ route }) {
         </View>
         <Modal visible={showLoseScreen} animationType="slide" transparent>
             <LoseModal onCloseModal={() => {
+               handleUpdateScore(email, playerWins);
                 setshowLoseScreen(false); // Menutup modal
                 setPlayerChoice(''); // Mengosongkan playerChoice
                 setComputerChoice(''); // Mengosongkan computerChoice
-                setPlayerWins(playerWins + 1);
-              }}/>
+                setPlayerWins(0);
+              }}
+              tokens = {token}
+              emails = {email}
+              />
         </Modal>
 
         <Modal visible={showWinScreen} animationType="slide" transparent>
             <ModalWin onCloseModal={() => {
+               handleUpdateScore(email, playerWins);
                 setshowWinScreen(false); // Menutup modal
                 setPlayerChoice(''); // Mengosongkan playerChoice
                 setComputerChoice(''); // Mengosongkan computerChoice
-                setPlayerWins(playerWins + 1);
-              }}/>
+                setPlayerWins(0);
+              }}
+              tokens = {token}
+              emails = {email}
+              />
         </Modal>
 
    
