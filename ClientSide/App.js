@@ -11,6 +11,8 @@ import Login from "./src/screens/Login";
 import Leaderboard from "./src/screens/Leaderboard";
 import RondeModal from "./src/screens/RondeModal";
 import Main from "./src/screens/Main";
+import ModalWin from "./src/screens/ModalWin";
+import LoseModal from "./src/screens/LoseModal";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -40,6 +42,21 @@ const App = () => {
         component={RondeModal}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+      name="Main"
+      component={Main}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+    name="ModalWin"
+    component={ModalWin}
+    options={{ headerShown: false }}
+  />
+  <Stack.Screen
+  name="LoseModal"
+  component={LoseModal}
+  options={{ headerShown: false }}
+/>
       </Stack.Navigator>
     </NavigationContainer>
   );
