@@ -2,32 +2,105 @@ import {
   StyleSheet,
   Text,
   View,
+  Button,
   Image,
   TouchableOpacity,
+  StatusBar,
   ScrollView,
   SafeAreaView,
+  Modal,
+  Screen
 } from "react-native";
-
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import InsetShadow from "react-native-inset-shadow";
 import { useState } from "react";
 import RondeModal from "./RondeModal";
-import ModalWin from "./ModalWin";
 import LoseModal from "./LoseModal";
+import ModalWin from "./ModalWin";
+import axios from "axios";
 
-export default function Main({ navigation }) {
-  const [isType, setIsType] = useState("");
+const choices = [
+  {
+    name: 'rock',
+    uri:  require(`../../assets/Batu.png`)
+  },
+  {
+    name: 'paper',
+    uri:  require(`../../assets/Kertas.png`)
+  },
+  {
+    name: 'scissors',
+    uri:  require(`../../assets/Gunting.png`)
+   
+  },
+];
 
-  const handlerHands = (type) => {
-    setIsType(type);
+export default function Main({ route }) {
+  const [showScreen, setShowScreen] = useState(route.params.showScreen);
+
+  const [playerChoice, setPlayerChoice] = useState('');
+  const [computerChoice, setComputerChoice] = useState('');
+  
+  const [round, setRound] = useState(1);
+  
+  const [playerWins, setPlayerWins] = useState(0);
+  const [compWins, setCompWins] = useState(0);
+
+  const [showLoseScreen, setshowLoseScreen] = useState(showScreen);
+  const [showWinScreen, setshowWinScreen] = useState(showScreen);
+
+  const generateComputerChoice = () => {
+    return choices[Math.floor(Math.random() * choices.length)];
   };
 
-  const images = {
-    Batu: require(`../../assets/Batu.png`),
-    Gunting: require(`../../assets/Gunting.png`),
-    Kertas: require(`../../assets/Kertas.png`),
+  const playRound = (playerChoice) => {
+    const computerChoice = generateComputerChoice();
+    const newPlayerChoice = choices.find(choice => choice.name === playerChoice);
+
+    setPlayerChoice(newPlayerChoice);
+    setComputerChoice(computerChoice);
+
+    if (playerChoice === computerChoice.name) {
+    } else if (
+      (playerChoice === 'rock' && computerChoice.name === 'scissors') ||
+      (playerChoice === 'paper' && computerChoice.name === 'rock') ||
+      (playerChoice === 'scissors' && computerChoice.name === 'paper')
+    ) {
+      setPlayerWins(playerWins + 1);
+      setshowWinScreen(true);
+    } else {
+      setCompWins(compWins + 1);
+      setshowLoseScreen(true);
+    }
+
+    if (round < 1) {
+      setRound(round + 1);
+    }else{
+      setRound(1);
+    }  
   };
+
+  const ChoiceCard = ({ player, choice: { name, uri }}) => {
+  
+    return (
+      <View style={{ flexDirection: "column" }}>
+            <Text style={{ fontSize: 18, marginLeft: 75, fontWeight: "bold" }}>{player}</Text>
+            <View style={styles.Box}>
+              <InsetShadow>
+                <Image
+                  style={[styles.fingers, { marginTop: 18, marginLeft: 15}]}
+                  source={uri}
+                />
+              </InsetShadow>
+            </View>
+            
+            <View style={styles.Me}></View>
+          </View>
+    );
+  }
+  
   return (
-    <ScrollView>
+    <SafeAreaProvider>
       <View style={styles.container}>
         <Image style={styles.Logo} source={require("../../assets/Logo.png")} />
         <View style={styles.BattleTitle}>
@@ -41,33 +114,22 @@ export default function Main({ navigation }) {
             { marginTop: 40, alignItems: "center", flexDirection: "row" },
           ]}
         >
-          <View style={{ flexDirection: "column" }}>
-            <Text style={{ fontSize: 18, marginLeft: 110 }}>Aku</Text>
-            <View style={[styles.Box, { marginLeft: 70 }]}>
-              <InsetShadow>
-                <Image
-                  style={[styles.fingers, { marginTop: 18, marginLeft: 15 }]}
-                  source={images[isType]}
-                />
-              </InsetShadow>
-            </View>
-            <View style={[styles.Score, { marginLeft: 85 }]}></View>
-          </View>
-          <Text style={{ fontSize: 30, fontWeight: "bold", marginBottom: 50 }}>
-            VS
-          </Text>
-          <View style={{ flexDirection: "column" }}>
-            <Text style={{ fontSize: 18, marginLeft: 60 }}>Komputer</Text>
-            <View style={[styles.Box, { marginLeft: 30 }]}>
-              <InsetShadow />
-            </View>
-            <View style={styles.Score}></View>
-          </View>
+            <ChoiceCard 
+              player="Player"
+              choice={playerChoice}
+            />
+            <Text style={{ fontSize: 30, fontWeight: "bold", marginBottom: 50 }}>
+              VS
+            </Text>
+            <ChoiceCard 
+              player="Computer"
+              choice={computerChoice}
+            />
         </SafeAreaView>
-        <View style={{ flex: 1, flexDirection: "row", marginTop: 50 }}>
+        <View style={{ flex: 1, flexDirection: "row", marginTop: 100 }}>
           <TouchableOpacity
             style={styles.boxbgk}
-            onPress={() => handlerHands("Batu")}
+            onPress={() => playRound('rock')}
           >
             <View style={styles.boxbgk2}>
               <Image
@@ -88,7 +150,7 @@ export default function Main({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.boxbgk}
-            onPress={() => handlerHands("Kertas")}
+            onPress={() => playRound('paper')}
           >
             <View style={styles.boxbgk2}>
               <Image
@@ -109,7 +171,7 @@ export default function Main({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.boxbgk}
-            onPress={() => handlerHands("Gunting")}
+            onPress={() => playRound('scissors')}
           >
             <View style={styles.boxbgk2}>
               <Image
@@ -129,22 +191,34 @@ export default function Main({ navigation }) {
             </View>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
+        <Modal visible={showLoseScreen} animationType="slide" transparent>
+            <LoseModal onCloseModal={() => {
+                setshowLoseScreen(false); // Menutup modal
+                setPlayerChoice(''); // Mengosongkan playerChoice
+                setComputerChoice(''); // Mengosongkan computerChoice
+                setPlayerWins(playerWins + 1);
+              }}/>
+        </Modal>
+
+        <Modal visible={showWinScreen} animationType="slide" transparent>
+            <ModalWin onCloseModal={() => {
+                setshowWinScreen(false); // Menutup modal
+                setPlayerChoice(''); // Mengosongkan playerChoice
+                setComputerChoice(''); // Mengosongkan computerChoice
+                setPlayerWins(playerWins + 1);
+              }}/>
+        </Modal>
+
+   
+     
+        {/* <TouchableOpacity
           style={styles.ButtonBerhenti}
           onPress={() => navigation.navigate("RondeModal")}
         >
           <Text style={styles.textButton}>Berhenti</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("ModalWin")}>
-          <Text style={styles.ButtonBerhenti}>Tes Win</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("LoseModal")}>
-          <Text style={styles.ButtonBerhenti}>Tes Lose</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
-    </ScrollView>
+    </SafeAreaProvider>
   );
 }
 const styles = StyleSheet.create({
@@ -175,10 +249,13 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     backgroundColor: "#FEF6E1",
+    marginLeft: 50,
     marginTop: 10,
   },
-
   Score: {
+    flexDirection: "row",
+  },
+  Me: {
     width: 80,
     height: 40,
     backgroundColor: "#F6B17A",
@@ -219,7 +296,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 50,
     marginBottom: 50,
     shadowColor: "#000",
     shadowOffset: {

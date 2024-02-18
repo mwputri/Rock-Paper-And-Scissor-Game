@@ -61,7 +61,7 @@ export default function Home({ navigation }) {
                 <View style={styles.buttonGroup}>
                   <TouchableOpacity
                     style={styles.buttonMain}
-                    onPress={() => navigation.navigate("Login")}
+                    onPress={() => navigation.navigate("Main", {showScreen : false})}
                   >
                     <Text style={styles.textButton}>Main yu!</Text>
                   </TouchableOpacity>

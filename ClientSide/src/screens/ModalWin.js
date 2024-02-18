@@ -9,10 +9,18 @@ import {
     ScrollView,
   } from "react-native";
   import { SafeAreaProvider } from "react-native-safe-area-context";
-  import RondeModal from "./RondeModal";
   import Leaderboard from "./Leaderboard";
+  import { useNavigation } from '@react-navigation/native';
+
+  export default function ModalWin({ onCloseModal }) {
+    const navigation = useNavigation();
+
+    const handleMainLagi = () => {
+      navigation.navigate("Main", { showScreen: false });
+      onCloseModal(); // Menutup modal setelah navigasi
+    };
   
-  export default function ModalWin({ navigation }) {
+
     return (
       <SafeAreaProvider style={styles.container}>
         <Text
@@ -33,7 +41,7 @@ import {
           <View style={{ alignItems: "center", justifyContent:"space-between", flexDirection: "row"}}>
             <TouchableOpacity
               style={styles.Botton}
-              onPress={() => navigation.navigate("Main")}
+              onPress={handleMainLagi}
             >
               <Text style={styles.textButton}>Main Lagi</Text>
             </TouchableOpacity>
