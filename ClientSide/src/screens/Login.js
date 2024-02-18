@@ -63,7 +63,7 @@ export default function Login({ navigation }) {
     };
     if (userNameVerify && emailVerify && passwordVerify) {
       axios
-        .post("http://localhost:3000/registration", userData)
+        .post("https://a77f-114-10-24-1.ngrok-free.app/registration", userData)
         .then((res) => {
           console.log(res.data);
           if (res.data.status == "ok") {
@@ -140,7 +140,7 @@ export default function Login({ navigation }) {
       password: password,
     };
     axios
-      .post("http://localhost:3000/login", userData)
+      .post("https://a77f-114-10-24-1.ngrok-free.app/login", userData)
       .then((res) => {
         const { token, email } = res.data;
         AsyncStorage.setItem("token", token);
