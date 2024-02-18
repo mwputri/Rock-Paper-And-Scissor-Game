@@ -77,7 +77,7 @@ app.post("/update-score", async(req,res)=>{
         if (!user) {
             return res.send({ status: "error", message: "User not found!" });
         }
-        user.totalSscore = user.totalScore + newScore;
+        user.totalScore = user.totalScore + newScore;
         await user.save();
 
         res.status(200).json({ message: "Total score saved successfully" });

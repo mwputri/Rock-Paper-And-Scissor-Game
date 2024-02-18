@@ -16,7 +16,7 @@ import axios from "axios";
 import LogoutButton from "../components/LogoutButton";
 import { useFonts } from "expo-font";
 
-const Leaderboard = ({}) => {
+const Leaderboard = ({ route }) => {
   const [fontsLoaded, fontError] = useFonts({
     "Roboto-Black": require("../../assets/fonts/Roboto-Black.ttf"),
     "Roboto-BlackItalic": require("../../assets/fonts/Roboto-BlackItalic.ttf"),
@@ -35,9 +35,10 @@ const Leaderboard = ({}) => {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+  const token = route.params.token;
+  const email = route.params.email;
 
   const [userData, setUserData] = useState([]);
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -45,14 +46,17 @@ const Leaderboard = ({}) => {
   const fetchData = async () => {
     try {
       const response = await axios.get("https://a77f-114-10-24-1.ngrok-free.app/leaderboards");
-      const userData = response.data.sort(
+      const sorted = response.data.sort(
         (a, b) => parseInt(b.totalScore) - parseInt(a.totalScore)
       );
-      setUserData(userData);
+      setUserData(sorted);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
+  console.log(email);
+  console.log(token);
 
   const navigation = useNavigation();
 
@@ -116,10 +120,10 @@ const Leaderboard = ({}) => {
 
         <View>
           <View style={styles.listScore}>
-            {/* <View style={styles.header}>
+            <View style={styles.header}>
               <Text style={styles.headerText}>Name</Text>
               <Text style={styles.headerText}>Score</Text>
-            </View> */}
+            </View> 
 
             <ScrollView style={styles.scrollView}>
               {userData.map((player, index) => (
@@ -149,7 +153,7 @@ const Leaderboard = ({}) => {
             >
               <Text
                 style={styles.buttonText}
-                onPress={() => navigation.navigate("Round")}
+                onPress={() => navigation.navigate("RondeModal", {token,email})}
               >
                 Ayo Main!
               </Text>

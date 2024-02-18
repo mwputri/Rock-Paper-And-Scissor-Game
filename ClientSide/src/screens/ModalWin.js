@@ -12,9 +12,10 @@ import {
   import Leaderboard from "./Leaderboard";
   import { useNavigation } from '@react-navigation/native';
 
-  export default function ModalWin({ onCloseModal }) {
+  export default function ModalWin({ onCloseModal, emails, tokens }) {
     const navigation = useNavigation();
-
+    const email = emails;
+    const token = tokens;
     const handleMainLagi = () => {
       navigation.navigate("Main", { showScreen: false });
       onCloseModal(); // Menutup modal setelah navigasi
@@ -47,7 +48,7 @@ import {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.Botton, { backgroundColor: "#FFB996" }]}
-              onPress={() => navigation.navigate("Leaderboard")}
+              onPress={() => navigation.navigate("Leaderboard", {token,email}, onCloseModal())}
             >
               <Text style={[styles.textButton, { color: "#858484" }]}>
                 Berhenti

@@ -10,9 +10,13 @@ import {
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
+import React, { useState, useEffect } from "react";
 import Main from "./Main";
 
-export default function RondeModal({ navigation }) {
+export default function RondeModal({ navigation, route }) {
+  const [round, setRound] = useState();
+  const token = route.params.token;
+  const email = route.params.email;
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={"dark-content"} />
@@ -44,7 +48,9 @@ export default function RondeModal({ navigation }) {
         </View>
 {/* Body Shape BGK */}
         <View style={{ flex: 1, flexDirection: "row", marginTop: 50 }}>
-          <TouchableOpacity style={styles.Rectangle}>
+          <TouchableOpacity style={styles.Rectangle}
+          onPress={() => setRound(1)}
+          >
             <View style={styles.Shape}>
               <Image
                 style={styles.fingers}
@@ -53,8 +59,11 @@ export default function RondeModal({ navigation }) {
               <Text style={{fontSize:24}}>1</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.Rectangle}>
-            <View style={styles.Shape}>
+          <TouchableOpacity style={styles.Rectangle}
+           onPress={() => setRound(3)}>
+            <View style={styles.Shape}
+         
+          >
               <Image
                 style={styles.fingers}
                 source={require("../../assets/Gunting.png")}
@@ -62,7 +71,9 @@ export default function RondeModal({ navigation }) {
               <Text style={{fontSize:24}}>3</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.Rectangle}>
+          <TouchableOpacity style={styles.Rectangle}
+          onPress={() => setRound(5)}
+          >
             <View style={styles.Shape}>
               <Image
                 style={styles.fingers}
@@ -74,7 +85,7 @@ export default function RondeModal({ navigation }) {
         </View>
         <TouchableOpacity
           style={styles.buttonStart}
-          onPress={() => navigation.navigate("RondeModal")}
+          onPress={() => navigation.navigate("Main", { token,email, round, showScreen : false})}
         >
           <Text style={styles.textButton}>Mulai</Text>
         </TouchableOpacity>

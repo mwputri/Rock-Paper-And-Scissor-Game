@@ -145,7 +145,7 @@ export default function Login({ navigation }) {
         const { token, email } = res.data;
         AsyncStorage.setItem("token", token);
         AsyncStorage.setItem("email", email);
-        navigation.navigate("Leaderboard");
+        navigation.navigate("Leaderboard", {token, email});
         if (res.data.status == "ok") {
           Alert.alert("Selamat Bermain!");
         } else {
