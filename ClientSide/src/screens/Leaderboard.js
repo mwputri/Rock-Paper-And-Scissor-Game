@@ -44,7 +44,7 @@ const Leaderboard = ({}) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/leaderboards");
+      const response = await axios.get("https://a77f-114-10-24-1.ngrok-free.app/leaderboards");
       const userData = response.data.sort(
         (a, b) => parseInt(b.totalScore) - parseInt(a.totalScore)
       );
