@@ -12,9 +12,10 @@ import {
   import Leaderboard from "./Leaderboard";
   import { useNavigation } from '@react-navigation/native';
 
-  export default function ModalWin({ onCloseModal, emails, tokens }) {
+  export default function ModalWin({ onCloseModal, emails, tokens, playerWinss}) {
     const navigation = useNavigation();
     const email = emails;
+    const playerWins = playerWinss;
     const token = tokens;
     const handleMainLagi = () => {
       navigation.navigate("Main", { showScreen: false });
@@ -38,7 +39,7 @@ import {
         <View style={styles.box}>
           <Image style={styles.img} source={require("../../assets/Winner.png")} />
           <Text style={styles.text}>SELAMAT KAMU MENANG!!!</Text>
-          <Text style={styles.text}>Nilai : </Text>
+          <Text style={styles.text}>Score : {playerWins}</Text>
           <View style={{ alignItems: "center", justifyContent:"space-between", flexDirection: "row"}}>
             <TouchableOpacity
               style={styles.Botton}

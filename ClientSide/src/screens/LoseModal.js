@@ -12,9 +12,10 @@ import {
   import Leaderboard from "./Leaderboard";
   import { useNavigation } from '@react-navigation/native';
 
-  export default function ModalLose({ onCloseModal, tokens, emails }) {
+  export default function ModalLose({ onCloseModal, tokens, emails, playerWinss }) {
     const navigation = useNavigation();
     const email = emails;
+    const playerWins = playerWinss;
     const token = tokens;
 
     const handleMainLagi = () => {
@@ -38,7 +39,7 @@ import {
         <View style={styles.box}>
           <Image style={styles.img} source={require("../../assets/Lose.png")} />
           <Text style={styles.text}>Yah Kamu Belum Beruntung.. </Text>
-          <Text style={styles.text}>Nilai : </Text>
+          <Text style={styles.text}>Score : {playerWins}</Text>
           <View style={{ alignItems: "center", justifyContent:"space-between", flexDirection: "row"}}>
             <TouchableOpacity
               style={styles.Botton}

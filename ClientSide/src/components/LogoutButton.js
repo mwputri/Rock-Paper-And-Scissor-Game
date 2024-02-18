@@ -11,6 +11,7 @@ const LogoutButton = () => {
       // Clear JWT token from AsyncStorage
       // await AsyncStorage.removeItem('jwtToken');
       await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem('email');
       // Navigate to login page
       // navigation.navigate('Login');
       navigation.navigate('Home');

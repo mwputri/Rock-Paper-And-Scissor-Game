@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import InsetShadow from "react-native-inset-shadow";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RondeModal from "./RondeModal";
 import LoseModal from "./LoseModal";
 import ModalWin from "./ModalWin";
@@ -37,24 +37,28 @@ const choices = [
 
 export default function Main({ route }) {
   const [showScreen, setShowScreen] = useState(route.params.showScreen);
-
   const [playerChoice, setPlayerChoice] = useState('');
   const [computerChoice, setComputerChoice] = useState('');
-  
   const [round, setRound] = useState(route.params.round);
+  const [roundsRemaining, setRoundsRemaining] = useState(round); // Tambahkan state roundsRemaining
   const [token, setToken] = useState(route.params.token);
   const [email, setEmail] = useState(route.params.email);
   const [playerWins, setPlayerWins] = useState(0);
   const [compWins, setCompWins] = useState(0);
-
   const [showLoseScreen, setshowLoseScreen] = useState(showScreen);
   const [showWinScreen, setshowWinScreen] = useState(showScreen);
+
+  useEffect(() => {
+    setRoundsRemaining(round); // Atur nilai roundsRemaining saat komponen dimuat atau nilai ronde berubah
+  }, [round]);
+
 
   const generateComputerChoice = () => {
     return choices[Math.floor(Math.random() * choices.length)];
   };
 
   const playRound = (playerChoice) => {
+    if (roundsRemaining === 0) return;
     const computerChoice = generateComputerChoice();
     const newPlayerChoice = choices.find(choice => choice.name === playerChoice);
 
@@ -68,20 +72,20 @@ export default function Main({ route }) {
       (playerChoice === 'scissors' && computerChoice.name === 'paper')
     ) {
       setPlayerWins(playerWins + 1);
-      setshowWinScreen(true);
 
     } else {
       setCompWins(compWins + 1);
-      setshowLoseScreen(true);
+    }
+    setRoundsRemaining(roundsRemaining - 1);
+
+    if (roundsRemaining === 1) {
+      if (playerWins > compWins) {
+        setshowWinScreen(true);
+      } else {
+        setshowLoseScreen(true);
+      }
     }
 
-    if (round < 1) {
-      setRound(round + 1);
-    }else{
-      setRound(1);
-  // handleUpdateScore(email, playerWins);
-
-    } 
 
   };
 
@@ -216,11 +220,13 @@ export default function Main({ route }) {
         <Modal visible={showLoseScreen} animationType="slide" transparent>
             <LoseModal onCloseModal={() => {
                handleUpdateScore(email, playerWins);
+               setRoundsRemaining(round);
                 setshowLoseScreen(false); // Menutup modal
                 setPlayerChoice(''); // Mengosongkan playerChoice
                 setComputerChoice(''); // Mengosongkan computerChoice
                 setPlayerWins(0);
               }}
+              playerWinss = {playerWins}
               tokens = {token}
               emails = {email}
               />
@@ -229,11 +235,13 @@ export default function Main({ route }) {
         <Modal visible={showWinScreen} animationType="slide" transparent>
             <ModalWin onCloseModal={() => {
                handleUpdateScore(email, playerWins);
+               setRoundsRemaining(round);
                 setshowWinScreen(false); // Menutup modal
                 setPlayerChoice(''); // Mengosongkan playerChoice
                 setComputerChoice(''); // Mengosongkan computerChoice
                 setPlayerWins(0);
               }}
+              playerWinss = {playerWins}
               tokens = {token}
               emails = {email}
               />
