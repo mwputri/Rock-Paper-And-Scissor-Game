@@ -10,8 +10,9 @@ import {
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
+import Main from "./Main";
 
-export default function RondeModal() {
+export default function RondeModal({ navigation }) {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={"dark-content"} />
@@ -43,7 +44,7 @@ export default function RondeModal() {
         </View>
 {/* Body Shape BGK */}
         <View style={{ flex: 1, flexDirection: "row", marginTop: 50 }}>
-          <View style={styles.Rectangle}>
+          <TouchableOpacity style={styles.Rectangle}>
             <View style={styles.Shape}>
               <Image
                 style={styles.fingers}
@@ -51,8 +52,8 @@ export default function RondeModal() {
               />
               <Text style={{fontSize:24}}>1</Text>
             </View>
-          </View>
-          <View style={styles.Rectangle}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.Rectangle}>
             <View style={styles.Shape}>
               <Image
                 style={styles.fingers}
@@ -60,8 +61,8 @@ export default function RondeModal() {
               />
               <Text style={{fontSize:24}}>3</Text>
             </View>
-          </View>
-          <View style={styles.Rectangle}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.Rectangle}>
             <View style={styles.Shape}>
               <Image
                 style={styles.fingers}
@@ -69,11 +70,11 @@ export default function RondeModal() {
               />
               <Text style={{fontSize:24}}>5</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity
           style={styles.buttonStart}
-          onPress={() => setModalVisible(true)}
+          onPress={() => navigation.navigate("RondeModal")}
         >
           <Text style={styles.textButton}>Mulai</Text>
         </TouchableOpacity>
